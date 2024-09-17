@@ -1,0 +1,31 @@
+$mq-max-xs: 599px;
+$mq-max-sm: 959px;
+$mq-max-md: 1279px;
+$mq-max-lg: 1400px;
+$mq-max-xl: 1920px;
+
+// Base
+$text-brand: rgb(0, 190, 0) !default; // greeny
+
+// Lighter
+$text-brand-light: rgb(0, 255, 0) !default;
+$text-brand-lighter: rgb(85, 255, 85) !default;
+$text-brand-lightest: rgb(170, 255, 170) !default;
+
+// Darker
+$text-brand-dark: rgb(0, 127, 0) !default;
+$text-brand-darker: rgb(0, 63, 0) !default;
+$text-brand-darkest: rgb(0, 0, 0) !default;
+
+// Base
+$bg-brand: rgb(43, 43, 43) !default;
+
+// Lighter
+$bg-brand-light: rgb(85, 85, 85) !default;
+$bg-brand-lighter: rgb(128, 128, 128) !default;
+$bg-brand-lightest: rgb(170, 170, 170) !default;
+
+// Darker
+$bg-brand-dark: rgb(21, 21, 21) !default;
+$bg-brand-darker: rgb(10, 10, 10) !default;
+$bg-brand-darkest: rgb(0, 0, 0) !default;

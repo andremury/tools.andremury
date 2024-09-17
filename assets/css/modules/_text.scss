@@ -1,0 +1,39 @@
+.text {
+    &-brand {
+        color: $text-brand; // greeny
+
+        &-light {
+            color: $text-brand-light;
+
+            &er {
+                color: $text-brand-lighter;
+            }
+
+            &est {
+                color: $text-brand-lightest;
+            }
+        }
+
+        &-dark {
+            color: $text-brand-dark;
+
+            &er {
+                color: $text-brand-darker;
+            }
+
+            &est {
+                color: $text-brand-darkest;
+            }
+        }
+    }
+
+    &-ellipsis {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+small {
+    font-size: 0.8rem;
+}
