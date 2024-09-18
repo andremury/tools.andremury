@@ -35,7 +35,7 @@ const tools = ref([
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100dvh;
+    min-height: 100dvh;
 }
 
 h1 {

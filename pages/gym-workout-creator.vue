@@ -2,10 +2,10 @@
     <div>
         <h1 class="text-center">Gym Workout Creator</h1>
         <BRow>
-            <BCol>
+            <BCol cols="4">
                 <GymWorkoutCreator :sections="sections" @update="setSections" />
             </BCol>
-            <BCol>
+            <BCol cols="7" offset="1">
                 <GymA4Printable :sections="sections" :cols="cols" :key="updatekey" />
             </BCol>
         </BRow>
@@ -27,3 +27,9 @@ const setSections = (event: [Table[], Table[]]) => {
     updatekey.value++;
 };
 </script>
+
+<style lang="css" scoped>
+html {
+    background-color: black;
+}
+</style>

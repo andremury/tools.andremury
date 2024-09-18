@@ -12,21 +12,25 @@
                 <section v-for="(table, tblIdx) in tables[i]" :key="tblIdx"
                     class="border rounded p-3 position-relative">
                     <BFormGroup>
+                        <BButton variant="success" @click="addField(i, tblIdx)" class="my-3">
+                            <FaIcon icon="plus-circle" /> Novo Campo
+                        </BButton>
+
                         <BButton variant="link-danger" @click="removeTable(i, tblIdx)"
                             class="my-3 position-absolute trash-btn">
                             <FaIcon icon="trash" />
                         </BButton><br />
                         <legend>{{ table.name || `Section ${tblIdx + 1}` }}</legend>
                         <label>Título</label><br />
-                        <BInput type="text" v-model="table.name" />
-                        <div v-for="(field, fieldIdx) in table.fields" :key="fieldIdx">
-                            <label>name</label><br />
-                            <BInput type="text" v-model="field.name" /><br />
+                        <BInput type="text" v-model="table.name" class="mb-2" />
+                        <div v-for="(field, fieldIdx) in table.fields" :key="fieldIdx" class="d-flex">
+                            <BInput class="my-1 py-0" type="text" v-model="field.name" placeholder="Exercício"
+                                @keydown="isLastField(table, fieldIdx) ? nextField($event, i, tblIdx) : null" /><br />
+                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
+                                <FaIcon icon="trash" />
+                            </BButton>
                         </div> <br />
 
-                        <BButton variant="success" @click="addField(i, tblIdx)" class="my-3">
-                            <FaIcon icon="plus-circle" /> Novo Campo
-                        </BButton>
                     </BFormGroup>
                 </section>
             </BCol>
@@ -48,6 +52,23 @@ watch(tables.value, () => {
     emit('update', tables.value);
 });
 
+const isLastField = (table: Table, idx: number) => table?.fields.length - 1 === idx;
+
+const nextField = (event: KeyboardEvent, side: number, idx: number) => {
+    if (event.key === 'Enter' || event.key === 'Tab') {
+        const target = event.target as HTMLInputElement;
+        if (!target) return;
+
+        if (event.key === 'Tab') {
+            addField(side, idx);
+        }
+
+        target.blur();
+        target.select();
+
+    }
+};
+
 const addTable = (idx: number) => {
     console.log(idx);
     if (!tables.value[idx]) return;
@@ -55,10 +76,10 @@ const addTable = (idx: number) => {
         name: `Título`,
         fields: [
             {
-                name: `Field 1`,
+                name: `Exercício 1`,
             },
             {
-                name: `Field 2`,
+                name: `Exercício 2`,
             }
         ],
     });
@@ -72,8 +93,13 @@ const removeTable = (side: number, idx: number) => {
 const addField = (side: number, idx: number) => {
     if (!tables.value[side]?.[idx]) return;
     tables.value[side][idx].fields.push({
-        name: `Field ${tables.value[side][idx].fields.length + 1}`,
+        name: `Exercício ${tables.value[side][idx].fields.length + 1}`,
     });
+};
+
+const removeField = (side: number, idx: number, fieldIdx: number) => {
+    if (!tables.value[side]?.[idx]) return;
+    tables.value[side][idx].fields.splice(fieldIdx, 1);
 };
 
 
@@ -99,5 +125,9 @@ const exportJSON = () => {
 .trash-btn {
     right: 1em;
     top: 0;
+}
+
+input {
+    border-radius: 0;
 }
 </style>

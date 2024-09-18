@@ -1,8 +1,6 @@
 <template>
-  <div id="main">
-    <BContainer>
+  <div id="main" class="px-5">
       <NuxtPage />
-    </BContainer>
   </div>
 </template>
 
