@@ -6,10 +6,10 @@
             <BCol v-for="(col, idx) in sections" :key="idx">
                 <BRow no-gutters>
                     <BCol v-for="(section, sidx) in col" :key="sidx" cols="12"
-                        class="border rounded section my-1 overflow-hidden">
-                        <div class="d-flex justify-content-start px-3 py-2 border-bottom">
+                        class="border rounded section overflow-hidden">
+                        <div class="d-flex justify-content-start px-3 py-1 border-bottom">
                             <div class="box border px-4 py-2"></div>
-                            <div class="h4 ml-3 my-0">{{ section.name }}</div>
+                            <div class="h5 ml-3 my-0">{{ section.name }}</div>
                         </div>
                         <BTable :items="section.fields" :fields="fields" class="tbl" tbody-tr-class="tbl-row"
                             thead-class="tbl-row text-center" />
@@ -44,13 +44,16 @@ const { sections } = defineProps<{
 </script>
 
 <style scoped lang="scss">
+.section {
+    margin: 2px 0;
+}
 .a4 {
     >span {
         font-size: 0.7em;
     }
 
     position: relative;
-    transform: scale(1.2) translateY(10%);
+    // transform: scale(1) translateY(-10%);
     background-color: white;
     width: 21cm;
     height: 29.7cm;
@@ -69,7 +72,7 @@ const { sections } = defineProps<{
         width: fit-content;
     }
 
-    height: 100px;
+    height: 62px;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -109,7 +112,7 @@ const { sections } = defineProps<{
             width: 60%;
         }
 
-        padding: 2px 5px;
+        padding: 1px 5px;
 
         &:not(:first-child) {
             border-left: 1px solid var(--bs-border-color) !important

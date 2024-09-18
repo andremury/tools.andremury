@@ -3,6 +3,7 @@
         <h4>Workout Creator</h4>
         <BButton @click="importJSON">Import JSON</BButton>
         <BButton @click="exportJSON">Export JSON</BButton>
+        <BButton @click="print">Imprimir</BButton>
 
         <BRow>
             <BCol cols="6" v-for="i in [0, 1]">
@@ -102,7 +103,19 @@ const removeField = (side: number, idx: number, fieldIdx: number) => {
     tables.value[side][idx].fields.splice(fieldIdx, 1);
 };
 
+const print = () => {
+    const sheetPage = window.open(`/gym-sheet?json=${encodeURIComponent(JSON.stringify(tables.value))}`, '', 'height=1123,width=793');
+    if (sheetPage) {
+        sheetPage.focus();
+        sheetPage.onload = () => {
+            sheetPage.print();
+            sheetPage.onafterprint = () => {
+                sheetPage.close();
+            };
+        };
+    }
 
+};
 const importJSON = () => {
     const json = prompt('Paste JSON here');
     if (!json) return;

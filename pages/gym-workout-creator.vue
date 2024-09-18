@@ -6,7 +6,9 @@
                 <GymWorkoutCreator :sections="sections" @update="setSections" />
             </BCol>
             <BCol cols="7" offset="1">
-                <GymA4Printable :sections="sections" :cols="cols" :key="updatekey" />
+    
+                    <GymA4Printable :sections="sections" :cols="cols" :key="updatekey"  />
+                
             </BCol>
         </BRow>
 
