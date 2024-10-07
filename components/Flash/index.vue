@@ -1,34 +1,28 @@
 <template>
-    <div>
-        <FlashCard :title="card.title" :description="card.description" :key="card.id.toString(16)" />
-        <button @click="randomCard">Random Card</button>
+    <div class="text-center">
+        <h1 class="mb-3">Flash Cards</h1>
+        <Transition name="blur" mode="out-in">
+            <div :key="card.id">
+                <FlashCard :title="card.title" :description="card.description" :answer="card.answer" />
+            </div>
+        </Transition>
+        <BButton variant="outline-light" @click="randomCard">
+            <FaIcon icon="random" />
+        </BButton>
     </div>
 </template>
 
 <script setup lang="ts">
 
-const cards = [
-    {
-        id: 1,
-        title: 'Card 1',
-        description: 'This is the first card'
-    },
-    {
-        id: 2,
-        title: 'Card 2',
-        description: 'This is the second card'
-    },
-    {
-        id: 3,
-        title: 'Card 3',
-        description: 'This is the third card'
-    }
-];
+import { cards as mock } from '~/shared/data/flash-cards';
 
-const card = ref(cards[1]);
+
+const card = ref(mock[1]);
+
+
 
 function randomCard() {
-    const randomIndex = Math.floor(Math.random() * cards.length);
-    card.value = cards[randomIndex];
+    const randomIndex = Math.floor(Math.random() * mock.length);
+    card.value = mock[randomIndex];
 }
 </script>

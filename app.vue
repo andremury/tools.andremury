@@ -1,8 +1,13 @@
 <template>
   <div id="main" class="px-5">
-      <NuxtPage />
+    <HomeButton />
+    <NuxtPage />
   </div>
 </template>
+
+<script lang="ts" setup>
+
+</script>
 
 <style>
 body {
@@ -15,4 +20,6 @@ body {
   background-color: black;
   min-height: 100dvh;
 }
+
+
 </style>

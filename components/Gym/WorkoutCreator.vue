@@ -1,10 +1,8 @@
 <template>
     <div class="">
-        <h4>Workout Creator</h4>
         <BButton @click="importJSON">Import JSON</BButton>
-        <BButton @click="exportJSON">Export JSON</BButton>
+        <BButton class="mx-2" @click="exportJSON">Export JSON</BButton>
         <BButton @click="print">Imprimir</BButton>
-
         <BRow>
             <BCol cols="6" v-for="i in [0, 1]">
                 <BButton variant="success" @click="addTable(i)" class="my-3">
@@ -30,6 +28,12 @@
                             <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
                                 <FaIcon icon="trash" />
                             </BButton>
+                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
+                                <FaIcon icon="chevron-down" />
+                            </BButton>
+                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
+                                <FaIcon icon="chevron-up" />
+                            </BButton>
                         </div> <br />
 
                     </BFormGroup>
@@ -48,7 +52,6 @@ const emit = defineEmits<{
 }>();
 
 const tables = ref<[Table[], Table[]]>([[], []]);
-
 watch(tables.value, () => {
     emit('update', tables.value);
 });

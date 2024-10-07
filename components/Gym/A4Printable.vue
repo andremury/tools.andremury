@@ -6,18 +6,18 @@
             <BCol v-for="(col, idx) in sections" :key="idx">
                 <BRow no-gutters>
                     <BCol v-for="(section, sidx) in col" :key="sidx" cols="12"
-                        class="border rounded section overflow-hidden">
-                        <div class="d-flex justify-content-start px-3 py-1 border-bottom">
-                            <div class="box border px-4 py-2"></div>
+                        class="border border-dark rounded section overflow-hidden">
+                        <div class="d-flex justify-content-start px-3 py-1 border-bottom border-dark">
+                            <div class="box border border-dark px-4 py-2"></div>
                             <div class="h5 ml-3 my-0">{{ section.name }}</div>
                         </div>
                         <BTable :items="section.fields" :fields="fields" class="tbl" tbody-tr-class="tbl-row"
-                            thead-class="tbl-row text-center" />
+                            border-variant="dark" thead-class="tbl-row text-center" />
                     </BCol>
                 </BRow>
             </BCol>
         </BRow>
-        <section class="recommendations border rounded">
+        <section class="recommendations border border-dark rounded">
             <legend>Recomendações</legend>
         </section>
     </div>
@@ -47,6 +47,7 @@ const { sections } = defineProps<{
 .section {
     margin: 2px 0;
 }
+
 .a4 {
     >span {
         font-size: 0.7em;
@@ -81,8 +82,8 @@ const { sections } = defineProps<{
     background-color: white;
     z-index: 2;
     opacity: 0.8;
-    background-size: 20px 20px;
-    background-image: repeating-linear-gradient(0deg, #444cf7, #444cf7 1px, rgba(0, 0, 255, 0) 1px, #e5e5f700);
+    background-size: 20px 16px;
+    background-image: repeating-linear-gradient(0deg, #000000, #000000 1px, rgba(0, 0, 255, 0) 1px, #e5e5f700);
     margin: 1em 1.5em;
 }
 
@@ -105,9 +106,10 @@ const { sections } = defineProps<{
 
     td,
     th {
-        &:nth-child(1){
+        &:nth-child(1) {
             padding: 0 15px;
         }
+
         &:nth-child(2) {
             width: 60%;
         }
@@ -115,7 +117,7 @@ const { sections } = defineProps<{
         padding: 1px 5px;
 
         &:not(:first-child) {
-            border-left: 1px solid var(--bs-border-color) !important
+            border-left: 1px solid black !important
         }
 
         &:last-child {

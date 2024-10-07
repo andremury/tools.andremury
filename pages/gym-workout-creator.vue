@@ -1,14 +1,13 @@
 <template>
     <div>
-        <h1 class="text-center">Gym Workout Creator</h1>
+        <h1 class="text-center mb-3">Criador de Fichas de Treino</h1>
         <BRow>
             <BCol cols="4">
                 <GymWorkoutCreator :sections="sections" @update="setSections" />
             </BCol>
             <BCol cols="7" offset="1">
-    
-                    <GymA4Printable :sections="sections" :cols="cols" :key="updatekey"  />
-                
+                <h2> Preview </h2>
+                <GymA4Printable :sections="sections" :cols="cols" :key="updatekey" />
             </BCol>
         </BRow>
 
