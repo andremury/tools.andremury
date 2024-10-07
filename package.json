@@ -4,15 +4,23 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "PORT=8080 nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@bootstrap-vue-next/nuxt": "^0.24.17",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
+    "@nuxt/image": "^1.8.0",
+    "@nuxtjs/i18n": "^8.5.3",
+    "bootstrap": "^5.3.3",
+    "bootstrap-vue-next": "^0.24.17",
     "nuxt": "^3.13.0",
-    "sass-embedded": "^1.78.0",
-    "usebootstrap": "^3.5.48",
+    "sass": "1.77.6",
     "vue": "latest",
     "vue-router": "latest"
   }

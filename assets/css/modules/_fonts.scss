@@ -1,0 +1,20 @@
+.font {
+    &--rubik {
+        font-family: 'Rubik Distressed', sans-serif !important;
+    }
+
+    &--mohave {
+        font-family: 'Mohave', sans-serif !important;
+    }
+}
+
+h1,
+h2 {
+    font-family: Rubik Distressed, "Open Sans";
+}
+
+h3,
+h4,
+h5 {
+    font-family: Mohave, "Open Sans";
+}
