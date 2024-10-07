@@ -55,8 +55,7 @@ h1 {
 
 .welcome {
     animation: fade 2s;
-    opacity: 0;
-    animation-fill-mode: forwards;
+    animation-fill-mode: forwards infinite;
 }
 
 .subtitle {

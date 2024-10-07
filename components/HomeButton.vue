@@ -1,6 +1,6 @@
 <template>
     <div class="home-btn">
-        <BButton variant="link" @click="goHome" id="back-btn" v-b-tooltip.right="'Home'">
+        <BButton variant="link" @click="goHome" id="back-btn">
             <FaIcon icon="home" />
         </BButton>
     </div>
@@ -10,7 +10,7 @@
 const router = useRouter();
 
 const goHome = () => {
-    router.push({ path: "/" });
+    router.push("/");
 };
 </script>
 
