@@ -26,6 +26,9 @@ const tools = ref([
     }, {
         name: 'Gym Workout Creator',
         url: '/gym-workout-creator',
+    }, {
+        name: 'Fake Chat',
+        url: '/fake-chat',
     }
 ]);
 </script>
@@ -44,6 +47,7 @@ h1 {
 
 .tool-card {
     height: 100%;
+    min-height: 200px;
     transition: all 0.2s ease-in-out;
     user-select: none;
     cursor: pointer;

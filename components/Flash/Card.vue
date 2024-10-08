@@ -1,6 +1,6 @@
 <template>
     <Transition name="flip" mode="out-in">
-        <div class="flash-card " @click="turnIt" :key="+turned">
+        <div class="flash-card " @click="emit('turn')" :key="+(turned || 0)">
             <div v-if="turned">
                 <div class="description text-secondary">
                     <small>{{ description }}</small>
@@ -23,16 +23,15 @@
 
 <script lang="ts" setup>
 
-const turned = ref(false);
-
-function turnIt() {
-    turned.value = !turned.value;
-}
+const emit = defineEmits<{
+    (e: 'turn'): void;
+}>();
 
 const { title } = defineProps<{
     title: string;
     description: string;
     answer: string;
+    turned: boolean
 }>();
 
 </script>
@@ -58,7 +57,7 @@ const { title } = defineProps<{
         padding-bottom: 0.5em;
         border-bottom: 1px solid rgba(255, 255, 255, 0.5);
     }
-    
+
     .description {
         font-size: 1em;
     }
