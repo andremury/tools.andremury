@@ -23,19 +23,27 @@
                         <label>Título</label><br />
                         <BInput type="text" v-model="table.name" class="mb-2" />
                         <div v-for="(field, fieldIdx) in table.fields" :key="fieldIdx" class="d-flex">
-                            <BInput class="my-1 py-0" type="text" v-model="field.name" placeholder="Exercício"
-                                @keydown="isLastField(table, fieldIdx) ? nextField($event, i, tblIdx) : null" /><br />
-                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
-                                <FaIcon icon="trash" />
-                            </BButton>
-                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
-                                <FaIcon icon="chevron-down" />
-                            </BButton>
-                            <BButton variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
-                                <FaIcon icon="chevron-up" />
-                            </BButton>
-                        </div> <br />
-
+                            <div class="fields my-1 py-0">
+                                <BInput type="text" v-model="field.name" placeholder="Exercício"
+                                    @keydown="isLastField(table, fieldIdx) ? nextField($event, i, tblIdx) : null" />
+                                <div class="d-flex">
+                                    <BInput type="number" placeholder="Séries" v-model="field.sets" />
+                                    <BInput type="number" placeholder="Reps" v-model="field.reps" />
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <BButton class="p-0 m-0" variant="link-danger" @click="removeField(i, tblIdx, fieldIdx)" tabindex="-1">
+                                    <FaIcon icon="trash" />
+                                </BButton>
+                                <BButton class="p-0 m-0" variant="link-danger" @click="moveFieldDown(i, tblIdx, fieldIdx)"
+                                    tabindex="-1">
+                                    <FaIcon icon="chevron-down" />
+                                </BButton>
+                                <BButton class="p-0 m-0" variant="link-danger" @click="moveFieldUp(i, tblIdx, fieldIdx)" tabindex="-1">
+                                    <FaIcon icon="chevron-up" />
+                                </BButton>
+                            </div>
+                        </div>
                     </BFormGroup>
                 </section>
             </BCol>
@@ -45,7 +53,6 @@
 
 <script lang="ts" setup>
 import type { Table } from '~/shared/types';
-
 
 const emit = defineEmits<{
     (e: 'update', table: [Table[], Table[]]): void;
@@ -104,6 +111,22 @@ const addField = (side: number, idx: number) => {
 const removeField = (side: number, idx: number, fieldIdx: number) => {
     if (!tables.value[side]?.[idx]) return;
     tables.value[side][idx].fields.splice(fieldIdx, 1);
+};
+
+const moveFieldUp = (side: number, idx: number, fieldIdx: number) => {
+    if (!tables.value[side]?.[idx]) return;
+    if (fieldIdx === 0) return;
+    const tmp = tables.value[side][idx].fields[fieldIdx];
+    tables.value[side][idx].fields[fieldIdx] = tables.value[side][idx].fields[fieldIdx - 1];
+    tables.value[side][idx].fields[fieldIdx - 1] = tmp;
+};
+
+const moveFieldDown = (side: number, idx: number, fieldIdx: number) => {
+    if (!tables.value[side]?.[idx]) return;
+    if (fieldIdx === tables.value[side][idx].fields.length - 1) return;
+    const tmp = tables.value[side][idx].fields[fieldIdx];
+    tables.value[side][idx].fields[fieldIdx] = tables.value[side][idx].fields[fieldIdx + 1];
+    tables.value[side][idx].fields[fieldIdx + 1] = tmp;
 };
 
 const print = () => {

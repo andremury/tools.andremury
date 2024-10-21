@@ -31,8 +31,8 @@ const a4Ref = ref<HTMLDivElement>();
 const fields = [
     '#',
     { key: 'name', label: 'Exercício' },
-    'Séries',
-    'Reps.',
+    { key: 'sets', label: 'Séries' },
+    { key: 'reps', label: 'Reps.' },
     'Carga',
 ];
 

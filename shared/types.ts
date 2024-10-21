@@ -5,4 +5,7 @@ export interface Table {
 
 export interface A4Field {
     name: string;
+    reps?: number;
+    sets?: number;
+    weight?: number;
 }
