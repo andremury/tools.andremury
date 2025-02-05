@@ -9,7 +9,7 @@
                         class="border border-dark rounded section overflow-hidden">
                         <div class="d-flex justify-content-start px-3 py-1 border-bottom border-dark">
                             <div class="box border border-dark px-4 py-2"></div>
-                            <div class="h5 ml-3 my-0">{{ section.name }}</div>
+                            <div class="h5 ml-3 my-0"><b>{{ section.name }}</b></div>
                         </div>
                         <BTable :items="section.fields" :fields="fields" class="tbl" tbody-tr-class="tbl-row"
                             border-variant="dark" thead-class="tbl-row text-center" />
@@ -68,7 +68,7 @@ const { sections } = defineProps<{
         font-weight: bold;
         position: absolute;
         background-color: white;
-        top: -10px;
+        top: -15px;
         left: 10px;
         width: fit-content;
     }
@@ -86,6 +86,7 @@ const { sections } = defineProps<{
     background-image: repeating-linear-gradient(0deg, #000000, #000000 1px, rgba(0, 0, 255, 0) 1px, #e5e5f700);
     margin: 1em 1.5em;
 }
+
 
 .tbl {
     font-size: 0.7em;
@@ -106,6 +107,7 @@ const { sections } = defineProps<{
 
     td,
     th {
+        font-weight: bold;
         &:nth-child(1) {
             padding: 0 15px;
         }
