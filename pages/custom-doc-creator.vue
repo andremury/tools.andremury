@@ -1,5 +1,5 @@
 <template>
-    <BRow class="d-flex justify-content-center bg-white flex-wrap align-items-center w-100 dvh-100">
+    <BRow class="d-flex justify-content-center flex-wrap align-items-center w-100 dvh-100">
         <BCol cols="12" class="d-flex gap-2 justify-content-center">
             <BButton variant="outline-primary" squared @click="importDesign">Import</BButton>
             <BButton variant="outline-primary" squared @click="exportDesign">Export</BButton>
@@ -8,8 +8,8 @@
             <BButton variant="outline-primary" squared @click="autosaveEnabled = !autosaveEnabled">Autosave: {{
                 autosaveEnabled ? '✅' : '❌' }}</BButton>
         </BCol>
-        <BCol cols="12">
-            Last Saved {{ lastSaved }}
+        <BCol cols="12" class="text-center">
+            <small>Last Saved {{ lastSaved }}</small>
         </BCol>
         <BCol cols="12">
             <BInputGroup class="d-flex justify-content-center align-content-center">
@@ -60,7 +60,7 @@ const exportDesign = () => {
     });
 };
 const resetDesign = () => {
-    if (confirm('Are you sure?')){
+    if (confirm('Are you sure?')) {
         emailEditorRef.value?.editor?.loadBlank();
         localStorage.removeItem('design');
     }
@@ -221,10 +221,5 @@ watch(autosaveEnabled, (v) => {
 .placeholder-btn {
     height: 50px;
     width: fit-content;
-}
-</style>
-<style>
-#main {
-    background-color: white;
 }
 </style>
