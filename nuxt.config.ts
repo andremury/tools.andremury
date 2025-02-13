@@ -30,7 +30,7 @@ export default defineNuxtConfig({
     'bootstrap/dist/css/bootstrap.min.css',
     '@fortawesome/fontawesome-svg-core/styles.css',
     '@/assets/css/global.scss',
-    // 'vue3-toastify/dist/index.css',
+    'vue3-toastify/dist/index.css',
   ],
 
   app: {
