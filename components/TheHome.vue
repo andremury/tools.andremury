@@ -23,10 +23,16 @@ const tools = ref([
     {
         name: 'Flash Cards',
         url: '/flash-cards',
-    }, {
+    },
+    {
+        name: 'Custom Template Builder',
+        url: '/custom-doc-creator',
+    },
+    {
         name: 'Gym Workout Creator',
         url: '/gym-workout-creator',
-    }, {
+    },
+    {
         name: 'Fake Chat',
         url: '/fake-chat',
     }
