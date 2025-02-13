@@ -9,9 +9,9 @@
                     @turn="turnIt" />
             </div>
         </Transition>
-        <BButton class="mt-4" variant="outline-light" @click="randomCard">
+        <div class="btn btn-outline-light mt-4" variant="outline-light" @click="randomCard">
             <FaIcon icon="random" />
-        </BButton><br />
+        </div><br />
         <small class="text-secondary">Click this button <span class="fa-2x ml-3">👆</span> to get a new card.</small>
     </div>
 </template>
