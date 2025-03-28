@@ -1,5 +1,5 @@
 <template>
-{{ data }}
+<!-- {{ data }} -->
 </template>
 
 <script setup lang="ts">

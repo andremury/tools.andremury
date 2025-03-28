@@ -1,9 +1,9 @@
 <template>
     <BContainer class="w-100">
         <h1 class="text-center">Software Requirement Specification Studio</h1>
-        <SRSEditor v-model="doc" />
-        <SRSCanvas :data="doc" />
-        <SRSDocument :data="doc" />
+        <SRSEditor v-model="doc" class="z1" />
+        <SRSDocument :data="doc" class="z1" />
+        <SRSCanvas :data="doc" class="position-relative z0" />
     </BContainer>
 </template>
 
@@ -35,3 +35,13 @@ const emptyObj = () => <SRS.Specification>({
 
 const doc = ref<SRS.Specification>({ ...emptyObj() });
 </script>
+
+<style>
+.z1 {
+    z-index: 1;
+}
+
+.z0 {
+    z-index: 0;
+}
+</style>
