@@ -3,6 +3,8 @@ export default defineNuxtConfig({
   devtools: { enabled: process.env.NODE_ENV === 'development' },
 
   // plugins: ['~/plugins/vue-gtm.client.ts'],
+  plugins: [{ src: '~/plugins/vue-quill.ts', mode: 'client' }],
+
   modules: [
     '@bootstrap-vue-next/nuxt',
     "@nuxtjs/i18n",
@@ -30,6 +32,8 @@ export default defineNuxtConfig({
     'bootstrap/dist/css/bootstrap.min.css',
     '@fortawesome/fontawesome-svg-core/styles.css',
     '@/assets/css/global.scss',
+    // '@vueup/vue-quill/dist/vue-quill.snow.prod.css',
+    '@vueup/vue-quill/dist/vue-quill.bubble.prod.css',
     // 'vue3-toastify/dist/index.css',
   ],
 
@@ -72,7 +76,11 @@ export default defineNuxtConfig({
   build: {
     transpile: ['@fortawesome/vue-fontawesome'],
   },
-
+  vue: {
+    compilerOptions: {
+      // isCustomElement: (tag) => ['QuillEditor'].includes(tag),
+    }
+  },
   vite: {
     build: {
       terserOptions: {

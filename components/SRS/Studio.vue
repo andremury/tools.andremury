@@ -1,0 +1,37 @@
+<template>
+    <BContainer class="w-100">
+        <h1 class="text-center">Software Requirement Specification Studio</h1>
+        <SRSEditor v-model="doc" />
+        <SRSCanvas :data="doc" />
+        <SRSDocument :data="doc" />
+    </BContainer>
+</template>
+
+<script setup lang="ts">
+
+import { type SRS } from '~/shared/types';
+
+const emptySection = (title = '', content = '') => <SRS.Section>{
+    content,
+    title
+};
+
+const emptyObj = () => <SRS.Specification>({
+    sections: {
+        introduction: emptySection('Introduction', 'Introduction to my requirements.'),
+        productOverview: emptySection('Product Overview', 'The overview of my product.'),
+        restrictions: emptySection('Restrictions', 'The restrictions of this document'),
+        requirements: emptySection('Requirements', 'Brief explanation of what are requirements in this section.'),
+        trackability: emptySection('Trackability', 'The trackability strategy of this requirements.'),
+        modifications: emptySection('Modifications', 'The rules for modifying this piece of software.'),
+        developmentStrategy: emptySection('Development Strategy', 'How will this software be developed? Methodologies, strategies, etc.'),
+        completionCriteria: emptySection('Completion Criteria', 'All the terms needed to consider this product completed and delivered.'),
+    },
+    requirements: {
+        functional: [],
+        nonFunctional: []
+    },
+});
+
+const doc = ref<SRS.Specification>({ ...emptyObj() });
+</script>
