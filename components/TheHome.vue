@@ -1,6 +1,6 @@
 <template>
     <div id="home">
-        <BRow class="justify-content-center">
+        <BRow class="justify-content-center gap-3">
             <BCol cols="12" class="mb-5">
                 <h1 class="welcome text-center">Welcome to Tools</h1>
                 <h3 class="subtitle text-secondary text-center">Make your choice</h3>
@@ -29,6 +29,9 @@ const tools = ref([
     }, {
         name: 'Fake Chat',
         url: '/fake-chat',
+    }, {
+        name: 'SRS Studio',
+        url: '/requirement-studio',
     }
 ]);
 </script>

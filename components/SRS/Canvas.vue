@@ -1,10 +1,11 @@
 <template>
     <div class="srs-canvas">
-        <div class="srs-section d-flex gap-3 flex-wrap position-relative">
+        <div class="srs-section d-flex gap-5 flex-wrap position-relative">
             <div class="srs-rf  rounded border shadow-sm text-dark p-3 d-flex flex-column align-items-center justify-content-center pointer"
                 v-for="(item, index) in allRequirements" :key="item._key" :style="{
                     backgroundColor: item.color || 'blanchedalmond'
-                }" @click="selectItem(item)" role="button" :id="item._key">
+                }" @click="selectItem(item)" role="button" :id="item._key" @mouseenter="highlightDeps(item)"
+                @mouseleave="removeHighlights">
                 <div class="rf-content text-center">
                     <p><b>{{ item.title }}</b></p>
                     <small v-if="item.dependencies.length">
@@ -50,10 +51,42 @@ const selectItem = (item: SRS.Requirement) => {
         toggle();
     };
 };
+
 const closeModal = () => {
     toggle();
     selectedItem.value = undefined;
 };
+
+const highlightDeps = (item: SRS.Requirement) => {
+    if (item.dependencies.length < 1) return;
+    const curEl = document.getElementById(item._key);
+    if (!curEl) return;
+
+    item.dependencies.forEach(dep => {
+        if (!dep) return;
+        const reqEl = document.getElementById(dep._key);
+        reqEl?.classList.add('ref-highlight');
+        console.log(`req-dep-link-${dep._key}`);
+    });
+
+    const wrapper = document.getElementById(`req-dep-link-${item._key}`);
+    if (!wrapper) return;
+    console.log(wrapper.children[0]);
+    Object.values(wrapper.children).forEach(svg => {
+        if (svg.children[0]) {
+            svg.children[0].classList.add('ref-highlight');
+        }
+    });
+
+};
+
+const removeHighlights = () => {
+    if (typeof document === 'undefined') return;
+    Object.values(document.getElementsByClassName('ref-highlight')).forEach(el => {
+        el.classList.remove('ref-highlight');
+    });
+};
+
 const generateDependencyLink = (from: string, target: string) => {
     if (!from || !target) return '';
 
@@ -80,6 +113,7 @@ const generateDependencyLink = (from: string, target: string) => {
     width: 200px;
     word-break: break-all;
     user-select: none;
+    transition: all 200ms;
 }
 
 .rf-content {
@@ -92,9 +126,15 @@ const generateDependencyLink = (from: string, target: string) => {
 
 .dependency-links path {
     stroke-width: 2;
+    transition: all 200ms;
 }
 
 .svg-container {
     z-index: 0;
+}
+
+.ref-highlight {
+    filter: drop-shadow(0 0 0.5em rgb(255, 253, 124)) !important;
+    stroke-width: 10px !important;
 }
 </style>

@@ -107,7 +107,7 @@ const pushRequirement = (type: ReqType) => {
         text: 'Requirement Description',
         title: 'My Requirement ' + len,
         entities: [],
-        _key: "key-" + Math.random() * 99999,
+        _key: "key-" + Math.floor(Math.random() * 99999),
         color: "#FFFFFF"
     });
 };
