@@ -23,16 +23,18 @@ export namespace SRS {
     export interface Entity {
         name: string;
         fields: FieldSpec[];
-        dependsOn?: number;
         description?: string;
     }
 
     export interface Requirement {
         id: string;
+        _key: string;
         title: string;
         text: string;
+        color?: string;
         dependencies: string[];
         priority: 'Essential' | 'Important' | 'Desirable';
+        entities?: Entity[];
     }
 
 

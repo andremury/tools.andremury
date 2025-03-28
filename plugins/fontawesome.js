@@ -1,9 +1,10 @@
 import { library, config } from '@fortawesome/fontawesome-svg-core';
-import { faChevronDown, faChevronLeft, faChevronUp, faHome, faPlusCircle, faRandom, faTable, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronLeft, faChevronUp, faHome, faMinusCircle, faPlusCircle, faRandom, faTable, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(
   faPlusCircle,
+  faMinusCircle,
   faTable,
   faTrash,
   faChevronUp,
