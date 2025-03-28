@@ -39,8 +39,9 @@
                                         <option class="text-dark"
                                             v-for="option in dependencies.functional.filter(opt => opt._key !== requirement._key)"
                                             :value="option"
-                                            :disabled="!!requirement.dependencies.find(d => option._key === d?._key)">
-                                            [{{ option.id }}] {{ option.title }}
+                                            :disabled="!!requirement.dependencies.find(d => option._key === d?._key) || willCircularDepend(option, requirement)">
+                                            [{{ option.id }}] {{ option.title }} {{ willCircularDepend(option,
+                                                requirement) ? '(circular)' : '' }}
                                         </option>
                                     </select>
                                     <div class="remove-one-btn text-danger">
@@ -87,6 +88,9 @@ const dependencies = computed(() => {
     };
 });
 
+const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement) => {
+    return !!from.dependencies.find(d => d?.id === to.id);
+};
 
 const getId = (type: ReqType, index?: number) => {
     const len = index || (model.value.requirements[type].length + 1);

@@ -8,7 +8,7 @@
         <div class="description" v-html="requirement?.text"></div>
         {{ requirement?.priority }}<br />
         {{ requirement?.color }}<br />
-        {{ requirement?.dependencies }}<br />
+        {{requirement?.dependencies.map(d => d?.id)}}<br />
         {{ requirement?.entities }}
     </BModal>
 </template>

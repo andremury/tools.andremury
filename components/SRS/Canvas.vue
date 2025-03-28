@@ -4,7 +4,7 @@
             <div class="srs-rf  rounded border shadow-sm text-dark p-3 d-flex flex-column align-items-center justify-content-center pointer"
                 v-for="(item, index) in allRequirements" :key="item._key" :style="{
                     backgroundColor: item.color || 'blanchedalmond'
-                }" @click="selectItem(item)" role="button" :id="item.id">
+                }" @click="selectItem(item)" role="button" :id="item._key">
                 <div class="rf-content text-center">
                     <p><b>{{ item.title }}</b></p>
                     <small v-if="item.dependencies.length">
