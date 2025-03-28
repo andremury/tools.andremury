@@ -2,8 +2,9 @@
     <BContainer class="w-100">
         <h1 class="text-center">Software Requirement Specification Studio</h1>
         <SRSEditor v-model="doc" class="z1" />
-        <SRSDocument :data="doc" class="z1" />
-        <SRSCanvas :data="doc" class="position-relative z0" />
+        <!-- <SRSDocument :data="doc" class="z1" /> -->
+        <hr />
+        <SRSCanvas :data="doc" class="position-relative z0 mt-3 mb-5" />
     </BContainer>
 </template>
 
@@ -21,7 +22,8 @@ const emptyObj = () => <SRS.Specification>({
         introduction: emptySection('Introduction', 'Introduction to my requirements.'),
         productOverview: emptySection('Product Overview', 'The overview of my product.'),
         restrictions: emptySection('Restrictions', 'The restrictions of this document'),
-        requirements: emptySection('Requirements', 'Brief explanation of what are requirements in this section.'),
+        functionalRequirements: emptySection('Functional Requirements (FR)', 'Brief explanation of what are functional requirements in this section.'),
+        nonFunctionalRequirements: emptySection('Non Functional Requirements (NF)', 'Brief explanation of what are non functional requirements in this section.'),
         trackability: emptySection('Trackability', 'The trackability strategy of this requirements.'),
         modifications: emptySection('Modifications', 'The rules for modifying this piece of software.'),
         developmentStrategy: emptySection('Development Strategy', 'How will this software be developed? Methodologies, strategies, etc.'),

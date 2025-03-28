@@ -12,6 +12,8 @@ export interface A4Field {
 
 export namespace SRS {
 
+    export type Priority = 'Essential' | 'Important' | 'Desirable';
+
     export interface FieldSpec {
         id: number;
         name: string;
@@ -32,8 +34,8 @@ export namespace SRS {
         title: string;
         text: string;
         color?: string;
-        dependencies: string[];
-        priority: 'Essential' | 'Important' | 'Desirable';
+        dependencies: (Requirement | null)[];
+        priority: Priority;
         entities?: Entity[];
     }
 
@@ -49,7 +51,8 @@ export namespace SRS {
             introduction: Section;
             productOverview: Section;
             restrictions: Section;
-            requirements: Section;
+            functionalRequirements: Section;
+            nonFunctionalRequirements: Section;
             trackability: Section;
             modifications: Section;
             developmentStrategy: Section;
