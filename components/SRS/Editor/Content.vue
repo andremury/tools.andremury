@@ -13,8 +13,17 @@
                     <QuillEditor v-model:content="value.content" ref="quillEditor" theme="bubble" :id="`quill-${key}`"
                         content-type="html" />
                 </div>
-                <div class="requirement-specifications"
-                    v-if="['functionalRequirements', 'nonFunctionalRequirements'].includes(key)">
+                <div class="requirement-specifications" v-if="model?.requirements">
+                    <div class="d-flex flex-column gap-4" v-if="key === 'functionalRequirements'">
+
+                        <SRSRequirement :requirement="item" v-for="item in model?.requirements.functional"
+                            :key="item._key" />
+                    </div>
+                    <div v-else-if="key === 'nonFunctionalRequirements'">
+
+                        <SRSRequirement :requirement="item" v-for="item in model?.requirements.nonFunctional"
+                            :key="item._key" />
+                    </div>
                 </div>
             </BCol>
         </BRow>

@@ -24,19 +24,20 @@ export namespace SRS {
 
     export interface Entity {
         name: string;
-        fields: FieldSpec[];
         description?: string;
+        fields: FieldSpec[];
     }
 
     export interface Requirement {
         id: string;
         _key: string;
         title: string;
+        actors?: string;
         text: string;
         color?: string;
         dependencies: (Requirement | null)[];
         priority: Priority;
-        entities?: Entity[];
+        entities: Entity[];
     }
 
 
