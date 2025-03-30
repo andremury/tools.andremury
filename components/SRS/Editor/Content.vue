@@ -50,7 +50,9 @@ onMounted(() => {
 .srs-editor {
     color: black;
     background: white;
-    padding: 1cm 2cm;
+    @media screen and (min-width: 599px){
+        padding: 1cm 2cm;
+    }
     border: 1px dashed rgba(0, 0, 0, 0.125);
     width: 100%;
     max-width: 297mm

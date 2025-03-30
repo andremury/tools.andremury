@@ -1,5 +1,5 @@
 <template>
-  <div id="main" class="px-5">
+  <div id="main" class="px-lg-5">
     <HomeButton />
     <NuxtPage />
   </div>

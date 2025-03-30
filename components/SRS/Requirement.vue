@@ -1,6 +1,7 @@
 <template>
     <div class="doc-requirement w-100" :id="`doc-${requirement._key}`">
-        <div class="title border text-center bg-primary text-white"><b>{{ requirement.title }}</b></div>
+        <div class="title border text-center bg-primary text-white"><b>[{{ requirement.id }}] {{ requirement.title }}</b>
+        </div>
         <div class="actors mt-3" v-if="requirement.actors || true">
             Actors: {{ requirement.actors }}
         </div>
@@ -21,16 +22,19 @@
                 <BTable :fields="entityFields" :items="entity.fields" v-if="entity?.fields.length" />
             </div>
         </div>
-        <div class="priority d-flex justify-content-center gap-4">
-            <div class="border rounded py-2 px-3"
-                :class="{ 'bg-success text-white': requirement.priority === 'Essential' }">
-                Essential</div>
-            <div class="border rounded py-2 px-3"
-                :class="{ 'bg-success text-white': requirement.priority === 'Important' }">
-                Important</div>
-            <div class="border rounded py-2 px-3"
-                :class="{ 'bg-success text-white': requirement.priority === 'Desirable' }">
-                Desirable</div>
+        <div class="priority">
+            <p class="text-center">Priority:</p>
+            <div class="d-flex gap-4 justify-content-center">
+                <div class="border rounded py-2 px-3 d-md-block"
+                    :class="[requirement.priority === 'Essential' ? 'bg-success text-white d-block' : 'd-none']">
+                    Essential</div>
+                <div class="border rounded py-2 px-3 d-md-block"
+                    :class="[requirement.priority === 'Important' ? 'bg-success text-white d-block' : 'd-none']">
+                    Important</div>
+                <div class="border rounded py-2 px-3 d-md-block"
+                    :class="[requirement.priority === 'Desirable' ? 'bg-success text-white d-block' : 'd-none']">
+                    Desirable</div>
+            </div>
         </div>
     </div>
 </template>
