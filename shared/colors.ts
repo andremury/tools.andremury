@@ -31,6 +31,16 @@ function rgbToHex(rgb: [number, number, number]) {
     return '#' + ((r << 8) | (g << 4) | b).toString(16).padStart(6, 'f');
 }
 
+function hexToRgb(hex: string = '#FFFFFF') {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) throw new Error('Invalid color');
+    return {
+        r: parseInt(result[1], 16) || 255,
+        g: parseInt(result[2], 16) || 255,
+        b: parseInt(result[3], 16) || 255
+    }
+}
+
 function randomColor(as: 'rgb' | 'hsl' | 'hex') {
     const hue = Math.floor(Math.random() * 180);
     const sat = Math.floor(Math.random() * 100);
@@ -43,7 +53,23 @@ function randomColor(as: 'rgb' | 'hsl' | 'hex') {
     return rgbToHex([r, g, b]);
 }
 
+// def isLightOrDark(rgbColor=[0,128,255]):
+//     [r,g,b]=rgbColor
+//     hsp = math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b))
+//     if (hsp>127.5):
+//         return 'light'
+//     else:
+//         return 'dark'
+
+function isDarkColor(rgb: { r: number, g: number, b: number }) {
+    const { r, g, b } = rgb;
+    const hsp = Math.sqrt((0.299 * Math.pow(r, 2)) + 0.587 * Math.pow(g, 2) + 0.114 * (Math.pow(b, 2)));
+
+    return hsp < 127.5
+}
+
 export const Colors = {
-    randomColor, rgbToHex, hslToRgb
+    randomColor, rgbToHex, hslToRgb, isDarkColor,
+    hexToRgb
 };
 

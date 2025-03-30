@@ -1,21 +1,11 @@
 <template>
     <div class="srs-canvas">
         <div class="srs-section d-flex gap-5 flex-wrap position-relative">
-            <div class="srs-rf  rounded border shadow-sm text-dark p-3 d-flex flex-column align-items-center justify-content-center pointer"
-                v-for="(item, index) in allRequirements" :key="item._key" :style="{
-                    backgroundColor: item.color || 'blanchedalmond'
-                }" @click="selectItem(item)" role="button" :id="item._key" @mouseenter="highlightDeps(item)"
-                @mouseleave="removeHighlights">
-                <div class="rf-content text-center">
-                    <p><b>{{ item.title }}</b></p>
-                    <small v-if="item.dependencies.length">
-                        <{{item.dependencies.filter(d => d).map(d => d?.id).join(', ')}}>
-                    </small>
-                </div>
-
-            </div>
+            <SRSCanvasItem :requirement="item" v-for="(item, index) in allRequirements" :key="item._key"
+                @click="selectItem(item)" role="button" :id="item._key" @mouseenter="highlightDeps(item)"
+                @mouseleave="removeHighlights" />
         </div>
-        <div class="svg-container position-absolute w-100 h-100 top-0 start-0" ref="svgContainer">
+        <div class=" svg-container position-absolute w-100 h-100 top-0 start-0" ref="svgContainer">
             <div class="svg-req-links" v-for="item in allRequirements" :id="`req-dep-link-${item._key}`">
                 <svg data-v-8ea6e3ef="" class="dependency-links w-100 h-100 position-absolute top-0 start-0"
                     v-for="dep in item.dependencies">
