@@ -5,10 +5,10 @@
                 @click="selectItem(item)" role="button" :id="item._key" @mouseenter="highlightDeps(item)"
                 @mouseleave="removeHighlights" />
         </div>
-        <div class=" svg-container position-absolute w-100 h-100 top-0 start-0" ref="svgContainer">
+        <div class="svg-container position-absolute w-100 h-100 top-0 start-0" ref="svgContainer">
             <div class="svg-req-links" v-for="item in allRequirements" :id="`req-dep-link-${item._key}`">
                 <svg data-v-8ea6e3ef="" class="dependency-links w-100 h-100 position-absolute top-0 start-0"
-                    v-for="dep in item.dependencies">
+                    v-for="dep in item.dependencies" :key="item._key">
                     <path data-v-8ea6e3ef="" :stroke="item.color" stroke-width="2" fill="none"
                         :d="generateDependencyLink(item._key, dep._key)" v-if="dep"></path>
                 </svg>

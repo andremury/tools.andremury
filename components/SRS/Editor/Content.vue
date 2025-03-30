@@ -2,6 +2,9 @@
     <div class="bg-white py-5 d-flex justify-content-center">
         <BRow class="srs-editor shadow-sm">
             <!-- <BCol> PRODUCT LOGO - PRODUCT NAME - PRODUCT CODE </BCol> -->
+            <label v-if="model">Document name <br />
+                <input class="srs-input" v-model="model.name" />
+            </label>
             <BCol cols="12" v-for="(value, key, index) of model?.sections" class="d-flex flex-column py-3"
                 v-if="mounted">
                 <label for="key" class="w-100">
@@ -50,9 +53,11 @@ onMounted(() => {
 .srs-editor {
     color: black;
     background: white;
-    @media screen and (min-width: 599px){
+
+    @media screen and (min-width: 599px) {
         padding: 1cm 2cm;
     }
+
     border: 1px dashed rgba(0, 0, 0, 0.125);
     width: 100%;
     max-width: 297mm

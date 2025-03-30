@@ -48,6 +48,8 @@ export namespace SRS {
     }
 
     export interface Specification {
+        id: number;
+        name: string;
         sections: {
             introduction: Section;
             productOverview: Section;

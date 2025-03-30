@@ -9,7 +9,7 @@
                     v-model="requirement.dependencies[idx]">
                     <option class="text-dark" :value="null" selected disabled>Select</option>
                     <option class="text-dark"
-                        v-for="option in dependencies.functional.filter(opt => opt._key !== requirement._key)"
+                        v-for="option in options"
                         :value="option"
                         :disabled="!!requirement.dependencies.find(d => option._key === d?._key) || willCircularDepend(option, requirement)">
                         [{{ option.id }}] {{ option.title }} {{ willCircularDepend(option,
@@ -38,13 +38,15 @@
 <script setup lang="ts">
 import type { SRS } from '~/shared/types';
 
-const { requirement } = defineProps<{
+const { requirement, dependencies } = defineProps<{
     requirement: SRS.Requirement,
     dependencies: {
         functional: SRS.Requirement[]
         nonFunctional: SRS.Requirement[]
     }
 }>()
+
+const options = computed(() => dependencies.functional.filter(opt => opt._key !== requirement._key))
 
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement) => {
     return !!from.dependencies.find(d => d?.id === to.id);
