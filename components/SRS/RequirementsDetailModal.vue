@@ -1,15 +1,11 @@
 <template>
-    <BModal id="details-modal" v-model="model" @ok="emit('close')" ok-title="Close" ok-only>
+    <BModal id="details-modal" v-model="model" @ok="emit('close')" ok-title="Close" ok-only size="lg">
 
         <template #header>
             <h3><b>[{{ requirement?.id }}] {{ requirement?.title }}</b></h3>
         </template>
 
-        <div class="description" v-html="requirement?.text"></div>
-        {{ requirement?.priority }}<br />
-        {{ requirement?.color }}<br />
-        {{requirement?.dependencies.map(d => d?.id)}}<br />
-        {{ requirement?.entities }}
+        <SRSRequirement :requirement="requirement" v-if="requirement" />
     </BModal>
 </template>
 
