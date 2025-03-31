@@ -3,3 +3,9 @@
         <FakeChatScreen />
     </div>
 </template>
+
+<script setup lang="ts">
+useHead({
+    title: 'Fake Chat: Simulate a chat! - André Mury'
+});
+</script>

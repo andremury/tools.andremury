@@ -16,7 +16,9 @@
 
 <script lang="ts" setup>
 import type { Table } from '~/shared/types';
-
+useHead({
+    title: 'Gym Workout Creator - André Mury'
+});
 const cols = ref(2);
 const sections = ref<[Table[], Table[]]>([[], []]);
 

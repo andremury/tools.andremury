@@ -3,3 +3,8 @@
         <Flash />
     </div>
 </template>
+<script setup lang="ts">
+useHead({
+    title: 'Flash Cards - André Mury'
+});
+</script>

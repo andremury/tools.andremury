@@ -9,7 +9,12 @@
 </template>
 
 <script lang="ts" setup>
-import { version } from '~/package.json'
+import { version } from '~/package.json';
+
+useHead({
+  title: 'SRS, Flash Cards, Fake Chat and more - Andre Mury',
+})
+
 
 </script>
 
