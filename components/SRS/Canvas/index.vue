@@ -134,6 +134,7 @@ watch(isOpen, (open) => {
 
 .srs-canvas>.canvas-content {
     position: fixed;
+    z-index: 3;
     height: 50px;
     width: 50px;
     right: 20px;
