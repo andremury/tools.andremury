@@ -28,8 +28,7 @@
         </BInputGroup>
         <SRSEditor v-model="doc" class="z1" />
         <!-- <SRSDocument :data="doc" class="z1" /> -->
-        <hr />
-        <SRSCanvas :data="doc" class="position-relative z0 mt-3 mb-5" :key="doc.id" />
+        <SRSCanvas :data="doc" class="position-relative z0" :key="doc.id" />
     </BContainer>
 </template>
 

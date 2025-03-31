@@ -10,7 +10,7 @@
                 <GymA4Printable :sections="sections" :cols="cols" :key="updatekey" />
             </BCol>
         </BRow>
-
+        <hr class="pb-4" />
     </div>
 </template>
 

@@ -2,10 +2,14 @@
   <div id="main" class="px-lg-5">
     <HomeButton />
     <NuxtPage />
+    <div class="copyright text-secondary bottom-0 text-center">
+      <small>This platform is free to use and distribute according to MIT License. Version {{ version }}.</small>
+    </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { version } from '~/package.json'
 
 </script>
 
@@ -13,13 +17,17 @@
 body {
   padding: 0;
   margin: 0;
+  background-color: black;
 }
 
 #main {
   color: white;
   background-color: black;
-  min-height: 100dvh;
+  min-height: calc(100dvh - 25px);
 }
 
-
+.copyright {
+  height: 5px;
+  margin-top: -25px;
+}
 </style>
