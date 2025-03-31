@@ -47,9 +47,19 @@ export namespace SRS {
         subsection?: Section[];
     }
 
+    export interface Audit {
+        date: Date;
+        version: number;
+        author: string;
+        description: string;
+    }
+
     export interface Specification {
         id: number;
         name: string;
+        version: number;
+        audits: Audit[];
+        revision: Audit[];
         sections: {
             introduction: Section;
             productOverview: Section;

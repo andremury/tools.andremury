@@ -1,7 +1,7 @@
 <template>
     <BContainer class="w-100">
-        <h1 class="text-center">Software Requirement Specification Studio</h1>
-        <BInputGroup class="mb-2">
+        <h1 class="text-center my-5">Software Requirement Specification Studio</h1>
+        <BInputGroup class="mb-2 d-flex justify-content-center">
             <BButton @click="save">Save</BButton>
             <BDropdown text="Load doc">
                 <div class="d-flex flex-column gap-1 p-3">
@@ -21,6 +21,10 @@
             <BButton @click="exportJson">Export</BButton>
             <BButton @click="importJson">Import</BButton>
             <BButton @click="createNewDoc">New document</BButton>
+            <BButton variant='primary'>
+                <span v-if="saved">✅ Saved</span>
+                <span v-else>❌ Not Saved</span>
+            </BButton>
         </BInputGroup>
         <SRSEditor v-model="doc" class="z1" />
         <!-- <SRSDocument :data="doc" class="z1" /> -->
@@ -30,10 +34,9 @@
 </template>
 
 <script setup lang="ts">
-
-import { useCopyToClipboard } from '~/composables/copy-clipboard';
 import { LocalStorage } from '~/shared/SafeLocalStorage';
 import { type SRS } from '~/shared/types';
+import { toast } from 'vue3-toastify';
 
 const emptySection = (title = '', content = '') => <SRS.Section>{
     content,
@@ -43,6 +46,9 @@ const emptySection = (title = '', content = '') => <SRS.Section>{
 const emptyObj = () => <SRS.Specification>({
     id: Math.floor(Math.random() * 999),
     name: "My New Document",
+    version: 1,
+    audits: [],
+    revision: [],
     sections: {
         introduction: emptySection('Introduction', 'Introduction to my requirements.'),
         productOverview: emptySection('Product Overview', 'The overview of my product.'),
@@ -73,15 +79,19 @@ const createNewDoc = () => {
     }
 
     doc.value = { ...emptyObj() };
+
+    toast.success(`New document created.`);
 };
 
 const remove = (docId: number) => {
     const docs = LocalStorage.get<SavedDocsDict>('documents') || {};
-
+    const docName = docs[docId]?.name;
     delete docs[docId];
 
     LocalStorage.set('documents', docs);
     savedDocs.value = docs;
+
+    toast.success(`Document ${docName} removed.`);
 };
 
 const save = () => {
@@ -102,11 +112,13 @@ const save = () => {
     setTimeout(() => {
         saved.value = true;
     }, 100);
+
+    toast.success(`Document ${doc.value.name} saved.`);
 };
 
 const load = (docId: number) => {
     if (Object.values(savedDocs).length < 1) {
-        alert("No documents saved yet");
+        toast.info("No documents saved yet");
         return;
     }
 
@@ -116,7 +128,7 @@ const load = (docId: number) => {
 
     const loadedDoc = savedDocs.value[docId];
     if (!loadedDoc) {
-        alert('Invalid Document ID.');
+        toast.error('Invalid Document ID.');
         return;
     }
 
@@ -124,34 +136,57 @@ const load = (docId: number) => {
     setTimeout(() => {
         saved.value = true;
     }, 100);
+
+    toast.success(`Document ${loadedDoc.name} loaded.`);
+
 };
 
-const { copy } = useCopyToClipboard();
 const exportJson = () => {
-    const data = JSON.stringify(doc.value);
-    copy(data);
-};
+    if (typeof document === 'undefined') return;
 
+    const docFileName = `SRS-${doc.value.name}-${new Date().getTime()}.json`;
+
+    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(doc.value))}`;
+    const downloadAnchorNode = document.createElement('a');
+
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', docFileName);
+
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+
+    toast.info(`Download of ${docFileName} started.`);
+
+};
 
 
 const importJson = () => {
     const data = prompt('Insert the json here:');
 
     if (data === undefined || data === null) {
-        alert("Invalid document.");
+        toast.error('This JSON seems invalid.');
         return;
     }
 
     const importedDoc: SRS.Specification = JSON.parse(data);
     if (!importedDoc.id || /\D/g.test(String(importedDoc.id))) {
-        alert('Invalid document');
+        toast.error('This JSON seems invalid.');
         return;
     }
 
     doc.value = importedDoc;
+
     setTimeout(() => {
         saved.value = true;
     }, 100);
+};
+
+const saveOnKey = (e: KeyboardEvent) => {
+    if (e.key === 's' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        save();
+    }
 };
 
 onMounted(() => {
@@ -159,10 +194,16 @@ onMounted(() => {
     if (docs) {
         savedDocs.value = docs;
     }
+
+    setTimeout(() => {
+        saved.value = true;
+    }, 100);
+
+    if (window?.document)
+        window.document.onkeydown = saveOnKey;
 });
 
 watch(doc, (v) => {
-    console.log('modified doc');
     saved.value = false;
 }, { deep: true })
 

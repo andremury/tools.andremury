@@ -2,9 +2,12 @@
     <div class="bg-white py-5 d-flex justify-content-center">
         <BRow class="srs-editor shadow-sm">
             <!-- <BCol> PRODUCT LOGO - PRODUCT NAME - PRODUCT CODE </BCol> -->
-            <label v-if="model">Document name <br />
-                <input class="srs-input" v-model="model.name" />
-            </label>
+            <div class="heading-title text-center" v-if="model">
+                <h2>
+                    <input class="srs-input text-center" v-model="model.name" />
+                </h2>
+                <span class="text-muted">Software Requirement Specification</span>
+            </div>
             <BCol cols="12" v-for="(value, key, index) of model?.sections" class="d-flex flex-column py-3"
                 v-if="mounted">
                 <label for="key" class="w-100">

@@ -34,7 +34,7 @@ export default defineNuxtConfig({
     '@/assets/css/global.scss',
     // '@vueup/vue-quill/dist/vue-quill.snow.prod.css',
     '@vueup/vue-quill/dist/vue-quill.bubble.prod.css',
-    // 'vue3-toastify/dist/index.css',
+    'vue3-toastify/dist/index.css',
   ],
 
   app: {

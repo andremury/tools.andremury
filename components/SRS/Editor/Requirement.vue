@@ -1,6 +1,9 @@
 <template>
     <div class="srs-requirement-editor position-relative">
-        <h2 class="my-3 text-center">Functional Requirements</h2>
+        <h2 class="my-3 text-center"><span v-if="nonFunctional">Non-</span>Functional Requirements</h2>
+        <p class="text-secondary text-center" v-if="nonFunctional">💡 Non-Functional Requirements define how your system should work – like performance,
+            security, or usability.</p>
+        <p class="text-secondary text-center" v-else>💡 Functional Requirements define what your system needs to accomplish -  like CRUDs, forms, tasks, and so on.</p>
         <BRow class="bg-dark p-3">
             <TransitionGroup name="fade" v-if="model && requirements.length > 0">
                 <BCol cols="12" lg="6" v-for="(requirement, index) in requirements" :key="requirement._key">

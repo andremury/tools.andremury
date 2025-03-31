@@ -1,13 +1,13 @@
 <template>
-    <BTabs>
-        <BTab title="Content Editor">
+    <BTabs class="mt-5" nav-wrapper-class="d-flex justify-content-center" nav-item-class="px-2">
+        <BTab title="Content" active>
             <SRSEditorContent v-model="model" />
         </BTab>
-        <BTab title="Functional Requirements" active>
+        <BTab title="Functional">
             <SRSEditorRequirement v-model="model" />
         </BTab>
-        <BTab title="Non-Fuctional Requirements" active>
-            <SRSEditorRequirement v-model="model" non-functional/>
+        <BTab title="Non-Functional">
+            <SRSEditorRequirement v-model="model" non-functional />
         </BTab>
     </BTabs>
 

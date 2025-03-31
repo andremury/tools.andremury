@@ -1,12 +1,35 @@
 <template>
     <div class="srs-canvas">
-        <div class="srs-section d-flex gap-5 flex-wrap position-relative">
-            <SRSCanvasItem :requirement="item" v-for="(item, index) in data.requirements.functional" :key="item._key"
-                @click="selectItem(item)" role="button" :id="item._key" @mouseenter="highlightDeps(item)"
-                @mouseleave="removeHighlights" />
+        <div class="canvas-content" :class="{ 'open bg-dark p-3 overflow-auto': isOpen }">
+            <div class="icon border rounded-circle bg-white shadow-sm text-info d-flex align-items-center justify-content-center pointer"
+                v-if="!isOpen" role="button" @click="toggle">
+                <FaIcon icon="diagram-project" class="fa-2x mt-1" />
+            </div>
+            <Transition mode="out-in">
+                <div v-if="isOpen">
+                    <div class="headers position-relative w-100 mb-5">
+                        <div class="close pointer position-absolute end-0" role="button" @click="toggle">
+                            <FaIcon icon="times" />
+                        </div>
+                        <h5 class="text-center">Requirement Map</h5>
+                    </div>
+                    <div class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative"
+                        v-if="data.requirements.functional.length > 0">
+                        <SRSCanvasItem :requirement="item" v-for="(item, index) in data.requirements.functional"
+                            :key="item._key" @click="selectItem(item)" role="button" :id="item._key"
+                            @mouseenter="highlightDeps(item)" @mouseleave="removeHighlights" />
+                        <SRSCanvasLinks :requirements="data.requirements.functional"
+                            :key="data.id + data.requirements.functional.length" />
+                    </div>
+                    <div v-else
+                        class="text-secondary d-flex align-items-center justify-content-center h-100 w-100 mt-5">
+                        No requirements to show. Add requirements on "Functional Requirements" tab to show the diagram.
+                    </div>
+
+                </div>
+            </Transition>
+            <SRSRequirementsDetailModal v-model="modalIsOpen" @close="closeModal" :requirement="selectedItem" />
         </div>
-        <SRSCanvasLinks :requirements="data.requirements.functional" :key="data.id" />
-        <SRSRequirementsDetailModal v-model="isOpen" @close="closeModal" :requirement="selectedItem" />
     </div>
 </template>
 
@@ -15,6 +38,8 @@ import { type SRS } from '~/shared/types';
 const { data } = defineProps<{
     data: SRS.Specification;
 }>();
+
+const { isOpen: modalIsOpen, toggle: toggleModal } = useDisclosure();
 const { isOpen, toggle } = useDisclosure();
 
 const selectedItem = ref<SRS.Requirement>();
@@ -26,12 +51,12 @@ const selectItem = (item: SRS.Requirement) => {
         selectedItem.value = undefined;
     else {
         selectedItem.value = item;
-        toggle();
+        toggleModal();
     };
 };
 
 const closeModal = () => {
-    toggle();
+    toggleModal();
     selectedItem.value = undefined;
 };
 
@@ -65,7 +90,13 @@ const removeHighlights = () => {
     });
 };
 
-
+watch(isOpen, (open) => {
+    if (open) {
+        document.body.style.marginBottom = "49dvh";
+    } else {
+        document.body.style.marginBottom = "0";
+    }
+})
 
 </script>
 
@@ -80,11 +111,16 @@ const removeHighlights = () => {
     transition: all 200ms;
 }
 
-.srs-rf {
+.canvas-item {
     width: 200px;
-    word-break: break-all;
+    word-break: normal;
     user-select: none;
     transition: all 200ms;
+    z-index: 1;
+}
+
+.svg-container {
+    z-index: 0;
 }
 </style>
 <style lang="scss" scoped>
@@ -96,9 +132,30 @@ const removeHighlights = () => {
     z-index: 1;
 }
 
+.srs-canvas>.canvas-content {
+    position: fixed;
+    height: 50px;
+    width: 50px;
+    right: 20px;
+    bottom: 20px;
+    transition: all 200ms;
+
+    &.open {
+        height: 50dvh;
+        width: 100%;
+        right: 0;
+        bottom: 0;
+    }
+
+    .close {
+        z-index: 999;
+    }
+
+    .icon {
+        height: 50px;
+        width: 50px;
+    }
 
 
-.svg-container {
-    z-index: 0;
 }
 </style>
