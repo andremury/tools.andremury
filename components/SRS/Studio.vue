@@ -62,16 +62,18 @@ const emptyObj = () => <SRS.Specification>({
 
 const doc = ref<SRS.Specification>({ ...emptyObj() });
 
-type SavedDocsDict = Record<number, SRS.Specification>
-const savedDocs = ref<SavedDocsDict>({})
+type SavedDocsDict = Record<number, SRS.Specification>;
+const savedDocs = ref<SavedDocsDict>({});
+
+const saved = ref(true);
 
 const createNewDoc = () => {
-    if (confirm('Save current document?')) {
-        save()
+    if (!saved.value && confirm('Save current document?')) {
+        save();
     }
 
-    doc.value = { ...emptyObj() }
-}
+    doc.value = { ...emptyObj() };
+};
 
 const remove = (docId: number) => {
     const docs = LocalStorage.get<SavedDocsDict>('documents') || {};
@@ -80,11 +82,11 @@ const remove = (docId: number) => {
 
     LocalStorage.set('documents', docs);
     savedDocs.value = docs;
-}
+};
 
 const save = () => {
     if (!doc.value.name) {
-        const name = prompt('Please, set a name for this document:')
+        const name = prompt('Please, set a name for this document:');
         if (!name) {
             alert('You must set a name in order to save.');
             return;
@@ -93,11 +95,14 @@ const save = () => {
     }
     const docs = LocalStorage.get<SavedDocsDict>('documents') || {};
 
-    docs[doc.value.id] = JSON.parse(JSON.stringify({ ...doc.value }))
+    docs[doc.value.id] = JSON.parse(JSON.stringify({ ...doc.value }));
 
     LocalStorage.set('documents', docs);
     savedDocs.value = docs;
-}
+    setTimeout(() => {
+        saved.value = true;
+    }, 100);
+};
 
 const load = (docId: number) => {
     if (Object.values(savedDocs).length < 1) {
@@ -105,50 +110,61 @@ const load = (docId: number) => {
         return;
     }
 
-    if (confirm('Save current document?')) {
-        save()
+    if (!saved.value && confirm('Save current document?')) {
+        save();
     }
 
     const loadedDoc = savedDocs.value[docId];
     if (!loadedDoc) {
-        alert('Invalid Document ID.')
-        return
+        alert('Invalid Document ID.');
+        return;
     }
 
     doc.value = loadedDoc;
-}
+    setTimeout(() => {
+        saved.value = true;
+    }, 100);
+};
 
-const { copy } = useCopyToClipboard()
+const { copy } = useCopyToClipboard();
 const exportJson = () => {
-    const data = JSON.stringify(doc.value)
-    copy(data)
-}
+    const data = JSON.stringify(doc.value);
+    copy(data);
+};
 
 
 
 const importJson = () => {
-    const data = prompt('Insert the json here:')
+    const data = prompt('Insert the json here:');
 
     if (data === undefined || data === null) {
-        alert("Invalid document.")
+        alert("Invalid document.");
         return;
     }
 
-    const importedDoc: SRS.Specification = JSON.parse(data)
+    const importedDoc: SRS.Specification = JSON.parse(data);
     if (!importedDoc.id || /\D/g.test(String(importedDoc.id))) {
         alert('Invalid document');
         return;
     }
 
     doc.value = importedDoc;
-}
+    setTimeout(() => {
+        saved.value = true;
+    }, 100);
+};
 
 onMounted(() => {
     const docs = LocalStorage.get<SavedDocsDict>('documents');
     if (docs) {
         savedDocs.value = docs;
     }
-})
+});
+
+watch(doc, (v) => {
+    console.log('modified doc');
+    saved.value = false;
+}, { deep: true })
 
 </script>
 

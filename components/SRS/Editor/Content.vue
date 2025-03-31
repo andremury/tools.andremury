@@ -25,7 +25,7 @@
                     <div v-else-if="key === 'nonFunctionalRequirements'">
 
                         <SRSRequirement :requirement="item" v-for="item in model?.requirements.nonFunctional"
-                            :key="item._key" />
+                            :key="item._key" nonFunctional />
                     </div>
                 </div>
             </BCol>

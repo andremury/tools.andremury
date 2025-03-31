@@ -3,8 +3,11 @@
         <BTab title="Content Editor">
             <SRSEditorContent v-model="model" />
         </BTab>
-        <BTab title="Requirement Editor" active>
+        <BTab title="Functional Requirements" active>
             <SRSEditorRequirement v-model="model" />
+        </BTab>
+        <BTab title="Non-Fuctional Requirements" active>
+            <SRSEditorRequirement v-model="model" non-functional/>
         </BTab>
     </BTabs>
 

@@ -1,37 +1,44 @@
 <template>
-    <div class="doc-requirement w-100" :id="`doc-${requirement._key}`">
-        <div class="title border text-center bg-primary text-white"><b>[{{ requirement.id }}] {{ requirement.title }}</b>
+    <div class="doc-requirement w-100" :id="`doc-${requirement._key}`"
+        :class="{ 'd-flex flex-column gap-4': !nonFunctional, 'pl-3': nonFunctional }">
+        <div class="title" :class="[nonFunctional ? '' : 'border text-center bg-blue-grey text-white py-2 rounded']">
+            <b>[{{ requirement.id }}] {{ requirement.title }}</b>
         </div>
-        <div class="actors mt-3" v-if="requirement.actors || true">
-            Actors: {{ requirement.actors }}
-        </div>
-        <div class="description mt-3 pt-3 border-top" v-html="requirement.text"></div>
-        <div class="dependencies d-flex gap-2 flex-wrap" v-if="requirement.dependencies.filter(Boolean).length > 0">
-            Depends on: <br />
-            <span v-for="dep in requirement.dependencies" :key="dep?._key">
-                <a :href="`#doc-${dep?._key}`">{{
-                    dep?.id }}
-                </a>
-            </span>
-        </div>
-        <div class="entities" v-if="requirement.entities">
-            <div class="entity" v-for="(entity, index) in requirement.entities" :key="+index">
-                <h6>{{ entity?.name }}</h6>
-                <div v-html="entity.description"></div>
-
-                <BTable :fields="entityFields" :items="entity.fields" v-if="entity?.fields.length" />
+        <div>
+            <div class="actors" v-if="!nonFunctional && requirement.actors">
+                Actors: {{ requirement.actors }}
+            </div>
+            <div class="dependencies d-flex gap-2 flex-wrap "
+                v-if="!nonFunctional && requirement.dependencies.filter(Boolean).length > 0">
+                Depends on: <br />
+                <span v-for="dep in requirement.dependencies" :key="dep?._key">
+                    <a :href="`#doc-${dep?._key}`">{{
+                        dep?.id }}
+                    </a>
+                </span>
             </div>
         </div>
-        <div class="priority">
+        <div class="description" :class="{ 'border p-3 rounded': !nonFunctional }" v-html="requirement.text"></div>
+        <div class="entities border p-3 rounded" v-if="!nonFunctional && requirement.entities.length > 0">
+            <h5>Entities</h5>
+            <div class="entity mb-5" v-for="(entity, index) in requirement.entities" :key="+index">
+                <hr />
+                <h6>{{ index + 1 }}. <b>{{ entity?.name }}</b></h6>
+                <div v-html="entity.description"></div>
+
+                <BTable :fields="entityFields" striped :items="entity.fields" v-if="entity?.fields.length" />
+            </div>
+        </div>
+        <div class="priority py-2" v-if="!nonFunctional">
             <p class="text-center">Priority:</p>
             <div class="d-flex gap-4 justify-content-center">
-                <div class="border rounded py-2 px-3 d-md-block"
+                <div class="border rounded py-1 px-3 d-md-block"
                     :class="[requirement.priority === 'Essential' ? 'bg-success text-white d-block' : 'd-none']">
                     Essential</div>
-                <div class="border rounded py-2 px-3 d-md-block"
+                <div class="border rounded py-1 px-3 d-md-block"
                     :class="[requirement.priority === 'Important' ? 'bg-success text-white d-block' : 'd-none']">
                     Important</div>
-                <div class="border rounded py-2 px-3 d-md-block"
+                <div class="border rounded py-1 px-3 d-md-block"
                     :class="[requirement.priority === 'Desirable' ? 'bg-success text-white d-block' : 'd-none']">
                     Desirable</div>
             </div>
@@ -45,8 +52,9 @@ import startCase from 'lodash.startcase';
 import type { SRS } from '~/shared/types';
 
 defineProps<{
-    requirement: SRS.Requirement
-}>()
+    requirement: SRS.Requirement;
+    nonFunctional?: boolean;
+}>();
 
 const entityFields: TableField<SRS.FieldSpec>[] = [
     {
@@ -60,5 +68,11 @@ const entityFields: TableField<SRS.FieldSpec>[] = [
         key: 'type'
     },
 
-]
+];
 </script>
+
+<style scoped>
+.bg-blue-grey {
+    background-color: rgb(92, 92, 131);
+}
+</style>

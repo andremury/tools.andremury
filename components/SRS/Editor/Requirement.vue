@@ -1,21 +1,21 @@
 <template>
     <div class="srs-requirement-editor position-relative">
-        <h2>Functional Requirements</h2>
-        <BRow>
-            <TransitionGroup name="fade" v-if="model && model?.requirements.functional.length > 0">
-                <BCol cols="12" lg="6" v-for="(requirement, index) in model?.requirements.functional"
-                    :key="requirement._key">
+        <h2 class="my-3 text-center">Functional Requirements</h2>
+        <BRow class="bg-dark p-3">
+            <TransitionGroup name="fade" v-if="model && requirements.length > 0">
+                <BCol cols="12" lg="6" v-for="(requirement, index) in requirements" :key="requirement._key">
                     <div class="py-2">
                         <!-- Description -->
                         <SRSEditorDescription :requirement="requirement" @delete="splice('functional', index)" />
                         <!-- Dependencies -->
-                        <SRSEditorDependencies :requirement="requirement" :dependencies="dependencies" />
+                        <SRSEditorDependencies v-if="!nonFunctional" :requirement="requirement"
+                            :dependencies="dependencies" />
                         <!-- Entities -->
-                        <SRSEditorEntities :requirement="requirement" />
+                        <SRSEditorEntities v-if="!nonFunctional" :requirement="requirement" />
 
                         <!-- Priority -->
                         <select class="form-select req-description my-2 text-white" required
-                            v-model="requirement.priority">
+                            v-model="requirement.priority" v-if="!nonFunctional">
                             <option class="text-dark" value="Essential">Essential</option>
                             <option class="text-dark" value="Important" selected>Important</option>
                             <option class="text-dark" value="Desirable">Desirable</option>
@@ -28,7 +28,8 @@
             </BCol>
             <BCol cols="12">
                 <div class="add-one-btn text-success fa-3x text-center">
-                    <FaIcon icon="plus-circle" class="pointer" role="button" @click="pushRequirement('functional')" />
+                    <FaIcon icon="plus-circle" class="pointer" role="button"
+                        @click="pushRequirement(nonFunctional ? 'nonFunctional' : 'functional')" />
                 </div>
             </BCol>
         </BRow>
@@ -40,7 +41,14 @@ import type { SRS } from '~/shared/types';
 const model = defineModel<SRS.Specification>({
     required: true
 });
+
+const { nonFunctional } = defineProps<{
+    nonFunctional?: boolean;
+}>();
+
 type ReqType = keyof SRS.Specification['requirements'];
+
+const requirements = computed((): SRS.Requirement[] => model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional']);
 
 const dependencies = computed(() => {
     const { functional, nonFunctional } = model.value.requirements;
