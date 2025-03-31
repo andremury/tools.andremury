@@ -2,7 +2,7 @@
   <div id="main" class="px-lg-5">
     <HomeButton />
     <NuxtPage />
-    <div class="copyright text-secondary bottom-0 text-center">
+    <div class="copyright text-secondary bottom-0 text-center px-3">
       <small>This platform is free to use and distribute according to MIT License. Version {{ version }}.</small>
     </div>
   </div>
@@ -32,7 +32,6 @@ body {
 }
 
 .copyright {
-  height: 5px;
-  margin-top: -25px;
+  height: 25px;
 }
 </style>

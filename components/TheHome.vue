@@ -5,7 +5,7 @@
                 <h1 class="welcome text-center">Welcome to Tools</h1>
                 <h3 class="subtitle text-secondary text-center">Make your choice</h3>
             </BCol>
-            <BCol cols="4" v-for="(tool, idx) in tools" :key="idx + tool.name">
+            <BCol cols="12" md="6" lg="4" v-for="(tool, idx) in tools" :key="idx + tool.name" class="px-3">
                 <NuxtLink :to="tool.url" class="text-decoration-none">
                     <div
                         class="tool-card text-white border rounded shadow-sm p-5 d-flex justify-content-center align-items-center text-center">
@@ -21,18 +21,21 @@
 
 const tools = ref([
     {
-        name: 'Flash Cards',
-        url: '/flash-cards',
-    }, {
-        name: 'Gym Workout Creator',
-        url: '/gym-workout-creator',
-    }, {
-        name: 'Fake Chat',
-        url: '/fake-chat',
-    }, {
         name: 'SRS Studio',
         url: '/requirement-studio',
-    }
+    },
+    {
+        name: 'Flash Cards',
+        url: '/flash-cards',
+    },
+    {
+        name: 'Gym Workout Creator',
+        url: '/gym-workout-creator',
+    },
+    {
+        name: 'Fake Chat',
+        url: '/fake-chat',
+    },
 ]);
 </script>
 

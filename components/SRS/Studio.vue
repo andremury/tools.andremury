@@ -48,6 +48,7 @@ const emptyObj = () => <SRS.Specification>({
     version: 1,
     audits: [],
     revision: [],
+    subtitle: "Software Requirement Specification",
     sections: {
         introduction: emptySection('Introduction', 'Introduction to my requirements.'),
         productOverview: emptySection('Product Overview', 'The overview of my product.'),

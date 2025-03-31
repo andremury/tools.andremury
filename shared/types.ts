@@ -57,6 +57,7 @@ export namespace SRS {
     export interface Specification {
         id: number;
         name: string;
+        subtitle?: string;
         version: number;
         audits: Audit[];
         revision: Audit[];

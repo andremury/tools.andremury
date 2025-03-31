@@ -1,5 +1,5 @@
 <template>
-    <BTabs class="mt-5" nav-wrapper-class="d-flex justify-content-center" nav-item-class="px-2">
+    <BTabs class="mt-5" nav-wrapper-class="d-flex justify-content-center" nav-item-class="px-1 px-md-3">
         <BTab title="Content" active>
             <SRSEditorContent v-model="model" />
         </BTab>

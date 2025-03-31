@@ -4,9 +4,10 @@
             <!-- <BCol> PRODUCT LOGO - PRODUCT NAME - PRODUCT CODE </BCol> -->
             <div class="heading-title text-center" v-if="model">
                 <h2>
-                    <input class="srs-input text-center" v-model="model.name" />
+                    <input class="srs-input text-center w-100" v-model="model.name" />
                 </h2>
-                <span class="text-muted">Software Requirement Specification</span>
+                <span class="w-100"><input class="srs-input text-center text-muted w-100"
+                        v-model="model.subtitle" /></span>
             </div>
             <BCol cols="12" v-for="(value, key, index) of model?.sections" class="d-flex flex-column py-3"
                 v-if="mounted">
@@ -16,7 +17,7 @@
                     </h4>
                 </label>
                 <div class="editor srs-input">
-                    <QuillEditor v-model:content="value.content" ref="quillEditor" theme="bubble" :id="`quill-${key}`"
+                    <QuillEditor v-model:content="value.content" theme="bubble" :id="`quill-${key}`"
                         content-type="html" />
                 </div>
                 <div class="requirement-specifications" v-if="model?.requirements">
@@ -43,7 +44,6 @@ import type { QuillEditor } from '@vueup/vue-quill';
 const mounted = ref(false);
 const model = defineModel<SRS.Specification>();
 
-const quillEditor = ref<InstanceType<typeof QuillEditor> | null>(null);
 
 onMounted(() => {
     if (typeof document !== "undefined") {
@@ -69,7 +69,10 @@ onMounted(() => {
 .srs-input {
     background-color: transparent;
     border: none;
-    color: black !important;
+
+    &:not(.text-muted) {
+        color: black !important;
+    }
 
     &:hover {
         background-color: rgba(0, 0, 0, .125) !important;
