@@ -69,14 +69,25 @@ const removeHighlights = () => {
 
 </script>
 
-<style lang="scss" scoped>
+<style>
+.ref-highlight {
+    filter: drop-shadow(0 0 0.5em rgb(255, 253, 124)) !important;
+    stroke-width: 10px !important;
+}
+
+.dependency-links path {
+    stroke-width: 2;
+    transition: all 200ms;
+}
+
 .srs-rf {
     width: 200px;
     word-break: break-all;
     user-select: none;
     transition: all 200ms;
 }
-
+</style>
+<style lang="scss" scoped>
 .rf-content {
     text-shadow: 1px 0 0 white;
 }
@@ -85,17 +96,9 @@ const removeHighlights = () => {
     z-index: 1;
 }
 
-.dependency-links path {
-    stroke-width: 2;
-    transition: all 200ms;
-}
+
 
 .svg-container {
     z-index: 0;
-}
-
-.ref-highlight {
-    filter: drop-shadow(0 0 0.5em rgb(255, 253, 124)) !important;
-    stroke-width: 10px !important;
 }
 </style>

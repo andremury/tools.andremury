@@ -62,10 +62,10 @@ const entityFields: TableField<SRS.FieldSpec>[] = [
         formatter: (_1, _2, item) => `${item.required ? '*' : ''}${startCase(item.name)}`
     },
     {
-        key: 'description'
+        key: 'type'
     },
     {
-        key: 'type'
+        key: 'description'
     },
 
 ];
