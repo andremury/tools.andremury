@@ -14,6 +14,8 @@ export namespace SRS {
 
     export type Priority = 'Essential' | 'Important' | 'Desirable';
 
+    export type SavedDocsDict = Record<number, Specification>;
+
     export interface FieldSpec {
         id: number;
         name: string;
@@ -46,7 +48,7 @@ export namespace SRS {
         title: string;
         content: string;
         subsection?: Section[];
-        invisible?: boolean
+        invisible?: boolean;
     }
 
     export interface Audit {
@@ -66,7 +68,7 @@ export namespace SRS {
         sections: {
             introduction: Section;
             productOverview: Section;
-            restrictions: Section;
+            constraints: Section;
             functionalRequirements: Section;
             nonFunctionalRequirements: Section;
             trackability: Section;

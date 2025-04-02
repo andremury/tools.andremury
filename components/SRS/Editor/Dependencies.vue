@@ -8,12 +8,10 @@
                 <select class="form-select req-description mb-2 text-white" required
                     v-model="requirement.dependencies[idx]">
                     <option class="text-dark" :value="null" selected disabled>Select</option>
-                    <option class="text-dark"
-                        v-for="option in options"
-                        :value="option"
+                    <option class="text-dark" v-for="option in options" :value="option"
                         :disabled="!!requirement.dependencies.find(d => option._key === d?._key) || willCircularDepend(option, requirement)">
-                        [{{ option.id }}] {{ option.title }} {{ willCircularDepend(option,
-                            requirement) ? '(circular)' : '' }}
+                        [{{ option.id }}] {{ option.title }} {{ willCircularDepend(option, requirement) ? '(circular)' :
+                        '' }}
                     </option>
                 </select>
                 <div class="remove-one-btn text-danger">
@@ -41,12 +39,12 @@ import type { SRS } from '~/shared/types';
 const { requirement, dependencies } = defineProps<{
     requirement: SRS.Requirement,
     dependencies: {
-        functional: SRS.Requirement[]
-        nonFunctional: SRS.Requirement[]
-    }
-}>()
+        functional: SRS.Requirement[];
+        nonFunctional: SRS.Requirement[];
+    };
+}>();
 
-const options = computed(() => dependencies.functional.filter(opt => opt._key !== requirement._key))
+const options = computed(() => dependencies.functional.filter(opt => opt._key !== requirement._key));
 
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement) => {
     return !!from.dependencies.find(d => d?.id === to.id);

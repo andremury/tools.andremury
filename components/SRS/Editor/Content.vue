@@ -9,10 +9,10 @@
                 <span class="w-100"><input class="srs-input text-center text-muted w-100"
                         v-model="model.subtitle" /></span>
             </div>
-            <BCol cols="12" v-for="(value, key, index) of model?.sections" class="d-flex flex-column py-3"
+            <BCol cols="12" v-for="(value, key, index) in visibleSections" class="d-flex flex-column py-3"
                 v-if="mounted">
                 <label for="key" class="w-100">
-                    <h4><input type="checkbox" /> {{ index + 1 }}.
+                    <h4>{{ index + 1 }}.
                         <input :name="key" v-model="value.title" :placeholder="startCase(key)" class="srs-input w-75" />
                     </h4>
                 </label>
@@ -43,6 +43,14 @@ import type { QuillEditor } from '@vueup/vue-quill';
 
 const mounted = ref(false);
 const model = defineModel<SRS.Specification>();
+
+const visibleSections = computed(() => Object.entries(model?.value?.sections || {}).filter(
+    ([_, value]) => !value.invisible
+).reduce((acc, [key, value]) => {
+    acc[key] = value;
+    return acc;
+}, {} as Record<string, SRS.Section>));
+
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
     // ['blockquote', 'code-block'],
