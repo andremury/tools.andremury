@@ -30,6 +30,7 @@ export namespace SRS {
 
     export interface Requirement {
         id: string;
+        group?: string;
         _key: string;
         title: string;
         actors?: string;
@@ -45,6 +46,7 @@ export namespace SRS {
         title: string;
         content: string;
         subsection?: Section[];
+        invisible?: boolean
     }
 
     export interface Audit {

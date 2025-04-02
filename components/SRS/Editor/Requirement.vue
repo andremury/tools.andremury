@@ -73,7 +73,7 @@ const pushRequirement = (type: ReqType) => {
     model.value.requirements[type].push({
         id,
         dependencies: [],
-        priority: 'Important',
+        priority: 'Essential',
         text: 'Requirement Description',
         title: 'My Requirement ' + len,
         entities: [],

@@ -4,7 +4,7 @@
             backgroundColor: requirement.color || 'blanchedalmond'
         }">
         <div class="rf-content text-center">
-            <p><b>{{ requirement.title }}</b></p>
+            <p><small>[{{ requirement.id }}]</small><br /><b> {{ requirement.title }}</b></p>
             <small v-if="requirement.dependencies.length">
                 <{{requirement.dependencies.filter(d => d).map(d => d?.id).join(', ')}}>
             </small>
@@ -17,8 +17,8 @@ import { Colors } from '~/shared/colors';
 import type { SRS } from '~/shared/types';
 
 const { requirement } = defineProps<{
-    requirement: SRS.Requirement
-}>()
+    requirement: SRS.Requirement;
+}>();
 
 const textColor = computed(() => Colors.isDarkColor(
     Colors.hexToRgb(requirement.color || '#ffffff')
