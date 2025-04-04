@@ -17,6 +17,15 @@
                     </a>
                 </span>
             </div>
+            <div class="related-requirements d-flex gap-2 flex-wrap "
+                v-if="!nonFunctional && requirement.relatedRequirements.length > 0">
+                Mentioned by: <br />
+                <span v-for="dep in requirement.relatedRequirements" :key="dep?._key">
+                    <a :href="`#doc-${dep?._key}`">
+                        {{ dep?.id }}
+                    </a>
+                </span>
+            </div>
         </div>
         <div class="description" :class="{ 'border p-3 rounded': !nonFunctional }" v-html="requirement.text"></div>
         <div class="entities border p-3 rounded" v-if="!nonFunctional && requirement.entities.length > 0">
