@@ -30,16 +30,19 @@ export namespace SRS {
         fields: FieldSpec[];
     }
 
-    export interface Requirement {
+    export interface ShortRequirement {
         id: string;
-        group?: string;
         _key: string;
         title: string;
+        color?: string;
+    }
+
+    export interface Requirement extends ShortRequirement {
+        group?: string;
         actors?: string;
         text: string;
-        color?: string;
         dependencies: (Requirement | null)[];
-        relatedRequirements: Requirement[]
+        relatedRequirements: ShortRequirement[];
         priority: Priority;
         entities: Entity[];
     }

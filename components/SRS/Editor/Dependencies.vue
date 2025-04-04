@@ -31,7 +31,8 @@
                 <p>Related requirements</p>
                 <p v-if="requirement.relatedRequirements?.length > 0">
                     <span class="related-item" v-for="item in requirement.relatedRequirements" :key="item._key">
-                        <a @click="highlight(item._key)" :href="`#${item._key}`">[{{ item.id }}]</a>
+                        <a @click="highlight(`requirement-def-${item._key}`)"
+                            :href="`#requirement-def-${item._key}`">[{{ item.id }}]</a>
                     </span>
                 </p>
                 <span class="text-secondary" v-else>No related requirements yet.</span>
@@ -67,9 +68,9 @@ const options = computed(() => dependencies.functional.filter(opt => opt._key !=
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement, visited = new Set<string>()): boolean => {
     if (!from || !from.dependencies) return false;
 
-    if (from.id === to.id) return true; 
+    if (from.id === to.id) return true;
 
-    if (visited.has(from.id)) return false; 
+    if (visited.has(from.id)) return false;
     visited.add(from.id);
 
     for (const dep of from.dependencies) {
@@ -102,15 +103,17 @@ const setRelatedRequirements = (nValue: ReqWNull, oValue: ReqWNull) => {
     const add = nValue.filter(nu => !oValue.find(old => old?._key === nu?._key));
     const remove = oValue.filter(old => !nValue.find(nu => nu?._key === old?._key));
 
-    console.log('Adicionados:', add);
-    console.log('Removidos:', remove);
-
     add.forEach((dep) => {
         if (!dep) return;
         if (!dep.relatedRequirements)
             dep.relatedRequirements = [];
 
-        dep.relatedRequirements.push(requirement);
+        dep.relatedRequirements.push({
+            id: requirement.id,
+            _key: requirement._key,
+            title: requirement.title,
+            color: requirement.color
+        });
     });
 
     remove.forEach((dep, idx) => {

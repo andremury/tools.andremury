@@ -9,7 +9,7 @@
         <BRow class="bg-dark p-3">
             <TransitionGroup name="fade" v-if="model && requirements.length > 0">
                 <BCol cols="12" lg="6" v-for="(requirement, index) in requirements" :key="requirement._key"
-                    :id="requirement._key">
+                    :id="`requirement-def-${requirement._key}`">
                     <div class="py-2">
                         <!-- Description -->
                         <SRSEditorDescription :requirement="requirement" @delete="splice('functional', index)" />
