@@ -6,12 +6,16 @@
             <div class="dep d-flex justify-content-between align-items-center gap-4"
                 v-for="(dep, idx) in selectedDependencies">
                 <select class="form-select req-description mb-2 text-white" required
-                    v-model="selectedDependencies[idx]">
-                    <option class="text-dark" :value="null" selected disabled>Select</option>
-                    <option class="text-dark" v-for="option in options" :value="option"
+                    @change="setDependency($event, idx)">
+                    <option class="text-dark" :value="null" :selected="!dep" disabled>
+                        Select
+                    </option>
+                    <option class="text-dark" v-for="(option, optionIdx) in options" :value="optionIdx"
+                        :selected="option._key === dep?._key"
                         :disabled="!!selectedDependencies.find(d => option._key === d?._key) || willCircularDepend(option, requirement)">
-                        [{{ option.id }}] {{ option.title }} {{ willCircularDepend(option, requirement) ? '(circular)' :
-                            '' }}
+                        [{{ option.id }}]
+                        {{ option.title }}
+                        {{ willCircularDepend(option, requirement) ? '(circular)' : '' }}
                     </option>
                 </select>
                 <div class="remove-one-btn text-danger">
@@ -96,6 +100,17 @@ const highlight = (elId: string) => {
     setTimeout(() => {
         el.classList.remove('highlight');
     }, 1000);
+};
+
+const setDependency = (event: Event, idx: number) => {
+    const optionIdx = Number((event.target as any).value);
+
+    if (optionIdx !== null && !Number.isNaN(optionIdx)) {
+        const item = options.value[optionIdx];
+        if (item && idx < selectedDependencies.value.length) {
+            selectedDependencies.value[idx] = item;
+        }
+    }
 };
 
 const setRelatedRequirements = (nValue: ReqWNull, oValue: ReqWNull) => {
