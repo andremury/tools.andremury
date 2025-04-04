@@ -17,8 +17,8 @@
                     </a>
                 </span>
             </div>
-            <div class="related-requirements d-flex gap-2 flex-wrap "
-                v-if="!nonFunctional && requirement.relatedRequirements.length > 0">
+            <div class="related-requirements d-flex gap-2 flex-wrap"
+                v-if="!nonFunctional && requirement.relatedRequirements?.length > 0">
                 Mentioned by: <br />
                 <span v-for="dep in requirement.relatedRequirements" :key="dep?._key">
                     <a :href="`#doc-${dep?._key}`">
