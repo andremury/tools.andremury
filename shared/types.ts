@@ -39,6 +39,7 @@ export namespace SRS {
         text: string;
         color?: string;
         dependencies: (Requirement | null)[];
+        relatedRequirements: Requirement[]
         priority: Priority;
         entities: Entity[];
     }

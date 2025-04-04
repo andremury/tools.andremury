@@ -8,7 +8,7 @@ body {
 }
 
 .ql-container {
-    font-family:  inherit !important;
+    font-family: inherit !important;
 }
 
 .shadow {
@@ -64,6 +64,27 @@ body {
     .app-logo-img {
         max-width: 2.5rem;
         max-height: 2.5rem;
+    }
+}
+
+.highlight {
+    border-radius: 5px !important;
+    animation: pulse 1s infinite;
+    background-color: rgb(82, 82, 82) !important;
+    // border: 2px solid var(--bs-primary) !important;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: .7
+    }
+
+    50% {
+        opacity: 0.3
+    }
+
+    100% {
+        opacity: .7
     }
 }
 
