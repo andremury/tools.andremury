@@ -4,27 +4,17 @@
         <h5 role="button" class="pointer user-select-none" v-b-toggle="`collapse-${requirement._key}`">Dependencies</h5>
         <BCollapse :id="`collapse-${requirement._key}`">
             <div class="dep d-flex justify-content-between align-items-center gap-4"
-                v-for="(dep, idx) in selectedDependencies">
-                <select class="form-select req-description mb-2 text-white" required
-                    @change="setDependency($event, idx)">
-                    <option class="text-dark" :value="null" :selected="!dep" disabled>
-                        Select
-                    </option>
-                    <option class="text-dark" v-for="(option, optionIdx) in options" :value="optionIdx"
-                        :selected="option._key === dep?._key"
-                        :disabled="!!selectedDependencies.find(d => option._key === d?._key) || willCircularDepend(option, requirement)">
-                        [{{ option.id }}]
-                        {{ option.title }}
-                        {{ willCircularDepend(option, requirement) ? '(circular)' : '' }}
-                    </option>
-                </select>
+                v-for="(dep, idx) in selectedDependencies" :key="dep?._key">
+                <LazyChosen v-model="selectedDependencies[idx]" :options="options"
+                    :initial-value="options.find((o) => o.key === selectedDependencies[idx]?._key)"
+                    :key="options.length" />
                 <div class="remove-one-btn text-danger">
                     <FaIcon icon="minus-circle" class="" role="button" @click="selectedDependencies.splice(idx, 1)" />
                 </div>
             </div>
             <div class="add-one-btn text-warning text-center gap-2 py-3" v-if="
-                dependencies.functional.length > 1
-                && selectedDependencies.length < dependencies.functional.length - 1">
+                dependencies.length > 1
+                && selectedDependencies.length < dependencies.length - 1">
                 <FaIcon icon="plus-circle" class="pointer  fa-2x" role="button"
                     @click="selectedDependencies.push(null)" />
             </div>
@@ -48,15 +38,10 @@
 </template>
 
 <script setup lang="ts">
-import type { SRS } from '~/shared/types';
-
-
+import type { ChosenOption, SRS } from '~/shared/types';
 const { requirement, dependencies } = defineProps<{
     requirement: SRS.Requirement,
-    dependencies: {
-        functional: SRS.Requirement[];
-        nonFunctional: SRS.Requirement[];
-    };
+    dependencies: SRS.Requirement[];
 }>();
 
 type ReqWNull = typeof requirement.dependencies;
@@ -67,7 +52,21 @@ const emit = defineEmits<{
 
 const selectedDependencies = ref<ReqWNull>([]);
 
-const options = computed(() => dependencies.functional.filter(opt => opt._key !== requirement._key));
+const options = computed(() => {
+    console.log('computing ooptions');
+    return dependencies
+        .filter(opt => opt._key !== requirement._key)
+        .map((opt) => {
+            const circularDep = willCircularDepend(opt, requirement);
+            return {
+                key: opt._key,
+                label: `${opt.id} ${opt.title}${circularDep ? ' (circular)' : ''} `,
+                value: opt,
+                disabled: !!selectedDependencies.value.find(d => opt._key === d?._key) || circularDep
+            };
+        });
+});
+
 
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement, visited = new Set<string>()): boolean => {
     if (!from || !from.dependencies) return false;
@@ -100,17 +99,6 @@ const highlight = (elId: string) => {
     setTimeout(() => {
         el.classList.remove('highlight');
     }, 2000);
-};
-
-const setDependency = (event: Event, idx: number) => {
-    const optionIdx = Number((event.target as any).value);
-
-    if (optionIdx !== null && !Number.isNaN(optionIdx)) {
-        const item = options.value[optionIdx];
-        if (item && idx < selectedDependencies.value.length) {
-            selectedDependencies.value[idx] = item;
-        }
-    }
 };
 
 const setRelatedRequirements = (nValue: ReqWNull, oValue: ReqWNull) => {

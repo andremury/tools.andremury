@@ -38,7 +38,7 @@
 </template>
 <script setup lang="ts">
 import startCase from 'lodash.startcase';
-import type { SRS } from '~/shared/types';
+import type { ChosenOption, SRS } from '~/shared/types';
 import type { QuillEditor } from '@vueup/vue-quill';
 
 const mounted = ref(false);
@@ -78,6 +78,7 @@ onMounted(async () => {
     if (typeof document !== "undefined") {
         mounted.value = true;
         QEditor.value = (await import('@vueup/vue-quill')).QuillEditor;
+
     }
 });
 </script>

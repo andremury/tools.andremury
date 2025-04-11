@@ -10,6 +10,14 @@ export interface A4Field {
     weight?: number;
 }
 
+export interface ChosenOption<T = any> {
+    label: string;
+    key: string;
+    value: T;
+    disabled?: boolean;
+}
+
+
 export namespace SRS {
 
     export type Priority = 'Essential' | 'Important' | 'Desirable';

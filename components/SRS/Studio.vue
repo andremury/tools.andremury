@@ -88,7 +88,7 @@ const tableOpts = computed(() => {
     }));
 
     return { fields, items };
-})
+});
 
 </script>
 

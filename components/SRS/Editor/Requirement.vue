@@ -9,12 +9,12 @@
         <BRow class="bg-dark p-3">
             <TransitionGroup name="fade" v-if="model && requirements.length > 0">
                 <BCol cols="12" lg="6" v-for="(requirement, index) in requirements" :key="requirement._key"
-                    :id="`requirement-def-${requirement._key}`" :class="{ 'my-3 py-3': index > 1 }">
+                    :id="`requirement-def-${requirement._key}`" :class="{ 'mt-3 pt-3': index > 1 }">
                     <div class="p-3 border">
                         <SRSEditorDefinition :requirement="requirement" @delete="splice('functional', index)" />
                         <!-- Priority -->
-                        <select class="form-select req-description text-white mt-2" required v-model="requirement.priority"
-                            v-if="!nonFunctional">
+                        <select class="form-select req-description text-white mt-2" required
+                            v-model="requirement.priority" v-if="!nonFunctional">
                             <option class="text-dark" value="Essential">Essential</option>
                             <option class="text-dark" value="Important" selected>Important</option>
                             <option class="text-dark" value="Desirable">Desirable</option>
@@ -25,7 +25,7 @@
                             <SRSEditorDescription :requirement="requirement" />
                             <!-- Dependencies -->
                             <SRSEditorDependencies v-if="!nonFunctional" :requirement="requirement"
-                                :dependencies="dependencies" />
+                                :dependencies="requirements" />
                             <!-- Entities -->
                             <SRSEditorEntities v-if="!nonFunctional" :requirement="requirement" />
                         </BCollapse>
@@ -59,16 +59,7 @@ const { nonFunctional } = defineProps<{
 
 type ReqType = keyof SRS.Specification['requirements'];
 
-const requirements = computed((): SRS.Requirement[] => model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional']);
-
-const dependencies = computed(() => {
-    const { functional, nonFunctional } = model.value.requirements;
-    return {
-        functional, nonFunctional
-    };
-});
-
-
+const requirements = computed((): SRS.Requirement[] => model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional'] || []);
 
 const getId = (type: ReqType, index?: number) => {
     const len = index || (model.value.requirements[type].length + 1);
@@ -100,8 +91,9 @@ const resetIds = (type: ReqType, requirements: SRS.Requirement[]) => {
 };
 
 const splice = (type: ReqType, index: number) => {
-    model.value.requirements[type] = resetIds(type, model.value.requirements[type].filter((_, idx) => idx !== index));
-}
+    // const updatedReqs = resetIds(type, model.value.requirements[type].filter((_, idx) => idx !== index));
+    model.value.requirements[type].splice(index, 1);
+};
 
 </script>
 <style lang="scss">
