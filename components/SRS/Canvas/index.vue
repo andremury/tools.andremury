@@ -1,15 +1,20 @@
 <template>
     <div class="srs-canvas">
-        <div class="canvas-content" :class="{ 'open bg-dark p-3 overflow-auto': isOpen }">
+        <div class="canvas-content" :class="{ 'open bg-dark p-3 overflow-auto': isOpen, expanded }">
             <div class="icon border rounded-circle bg-white shadow-sm text-info d-flex align-items-center justify-content-center pointer"
                 v-if="!isOpen" role="button" @click="toggle">
                 <FaIcon icon="diagram-project" class="fa-2x mt-1" />
             </div>
             <Transition mode="out-in">
                 <div v-if="isOpen">
-                    <div class="headers position-relative w-100 mb-5">
-                        <div class="close pointer position-absolute end-0" role="button" @click="toggle">
-                            <FaIcon icon="times" />
+                    <div class="headers w-100 mb-5">
+                        <div class="d-flex gap-3 position-absolute top-0 end-0 pr-4 pt-2">
+                            <div class="close pointer " role="button" @click="toggleExpand">
+                                <FaIcon :icon="expanded ? 'minimize' : 'expand'" />
+                            </div>
+                            <div class="close pointer " role="button" @click="toggle">
+                                <FaIcon icon="times" />
+                            </div>
                         </div>
                         <h5 class="text-center">Requirement Map</h5>
                     </div>
@@ -41,6 +46,7 @@ const { data } = defineProps<{
 
 const { isOpen: modalIsOpen, toggle: toggleModal } = useDisclosure();
 const { isOpen, toggle } = useDisclosure();
+const { isOpen: expanded, toggle: toggleExpand } = useDisclosure();
 
 const selectedItem = ref<SRS.Requirement>();
 
@@ -146,6 +152,10 @@ watch(isOpen, (open) => {
         width: 100%;
         right: 0;
         bottom: 0;
+
+        &.expanded {
+            height: 100dvh !important;
+        }
     }
 
     .close {
