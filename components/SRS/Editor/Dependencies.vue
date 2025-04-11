@@ -34,7 +34,8 @@
             <div class="related-deps-wrapper">
                 <p>Related requirements</p>
                 <p v-if="requirement.relatedRequirements?.length > 0">
-                    <span class="related-item" v-for="item in requirement.relatedRequirements" :key="item._key">
+                    <span class="related-item" v-for="item in requirement.relatedRequirements" :key="item._key"
+                        v-b-tooltip.hover="item.title">
                         <a @click="highlight(`requirement-def-${item._key}`)"
                             :href="`#requirement-def-${item._key}`">[{{ item.id }}]</a>
                     </span>
@@ -44,7 +45,6 @@
         </BCollapse>
     </div>
     <!-- END Dependencies Management -->
-
 </template>
 
 <script setup lang="ts">
@@ -99,7 +99,7 @@ const highlight = (elId: string) => {
 
     setTimeout(() => {
         el.classList.remove('highlight');
-    }, 1000);
+    }, 2000);
 };
 
 const setDependency = (event: Event, idx: number) => {

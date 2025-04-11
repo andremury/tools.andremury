@@ -90,7 +90,9 @@ onMounted(() => {
 
     border: 1px dashed rgba(0, 0, 0, 0.125);
     width: 100%;
-    max-width: 297mm
+    max-width: 297mm;
+
+
 }
 
 .srs-input {
@@ -104,5 +106,11 @@ onMounted(() => {
     &:hover {
         background-color: rgba(0, 0, 0, .125) !important;
     }
+}
+</style>
+
+<style>
+.ql-container {
+    font-size: 16px;
 }
 </style>

@@ -12,8 +12,8 @@
                 v-if="!nonFunctional && requirement.dependencies.filter(Boolean).length > 0">
                 Depends on: <br />
                 <span v-for="dep in requirement.dependencies" :key="dep?._key">
-                    <a :href="`#doc-${dep?._key}`">{{
-                        dep?.id }}
+                    <a :href="`#doc-${dep?._key}`" v-b-tooltip.hover="dep?.title">
+                        {{ dep?.id }}
                     </a>
                 </span>
             </div>
@@ -21,7 +21,7 @@
                 v-if="!nonFunctional && requirement.relatedRequirements?.length > 0">
                 Mentioned by: <br />
                 <span v-for="dep in requirement.relatedRequirements" :key="dep?._key">
-                    <a :href="`#doc-${dep?._key}`">
+                    <a :href="`#doc-${dep?._key}`" v-b-tooltip.hover="dep?.title">
                         {{ dep?.id }}
                     </a>
                 </span>
@@ -80,8 +80,16 @@ const entityFields: TableField<SRS.FieldSpec>[] = [
 ];
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .bg-blue-grey {
     background-color: rgb(92, 92, 131);
+}
+
+.doc-requirement {
+    &:not(:first-of-type) {
+        margin-top: 2rem;
+        border-top: 1px dashed rgb(219, 219, 219);
+        padding-top: 4rem;
+    }
 }
 </style>

@@ -70,8 +70,12 @@ body {
 .highlight {
     border-radius: 5px !important;
     animation: pulse 1s infinite;
-    background-color: rgb(82, 82, 82) !important;
+    background-color: rgb(127, 134, 61) !important;
     // border: 2px solid var(--bs-primary) !important;
+}
+
+.upside-down {
+    transform: rotateZ(180deg);
 }
 
 @keyframes pulse {

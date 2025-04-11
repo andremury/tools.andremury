@@ -9,23 +9,28 @@
         <BRow class="bg-dark p-3">
             <TransitionGroup name="fade" v-if="model && requirements.length > 0">
                 <BCol cols="12" lg="6" v-for="(requirement, index) in requirements" :key="requirement._key"
-                    :id="`requirement-def-${requirement._key}`">
-                    <div class="py-2">
-                        <!-- Description -->
-                        <SRSEditorDescription :requirement="requirement" @delete="splice('functional', index)" />
-                        <!-- Dependencies -->
-                        <SRSEditorDependencies v-if="!nonFunctional" :requirement="requirement"
-                            :dependencies="dependencies" />
-                        <!-- Entities -->
-                        <SRSEditorEntities v-if="!nonFunctional" :requirement="requirement" />
-
+                    :id="`requirement-def-${requirement._key}`" :class="{ 'my-3 py-3': index > 1 }">
+                    <div class="p-3 border">
+                        <SRSEditorDefinition :requirement="requirement" @delete="splice('functional', index)" />
                         <!-- Priority -->
-                        <select class="form-select req-description my-2 text-white" required
-                            v-model="requirement.priority" v-if="!nonFunctional">
+                        <select class="form-select req-description text-white mt-2" required v-model="requirement.priority"
+                            v-if="!nonFunctional">
                             <option class="text-dark" value="Essential">Essential</option>
                             <option class="text-dark" value="Important" selected>Important</option>
                             <option class="text-dark" value="Desirable">Desirable</option>
                         </select>
+
+                        <BCollapse :id="`collapse-requirement-${requirement._key}`">
+                            <!-- Description -->
+                            <SRSEditorDescription :requirement="requirement" />
+                            <!-- Dependencies -->
+                            <SRSEditorDependencies v-if="!nonFunctional" :requirement="requirement"
+                                :dependencies="dependencies" />
+                            <!-- Entities -->
+                            <SRSEditorEntities v-if="!nonFunctional" :requirement="requirement" />
+                        </BCollapse>
+
+
                     </div>
                 </BCol>
             </TransitionGroup>
