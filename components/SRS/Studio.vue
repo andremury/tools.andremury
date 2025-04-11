@@ -1,7 +1,6 @@
 <template>
     <BContainer class="w-100">
         <h1 class="text-center my-5">Software Requirement Specification Studio</h1>
-        {{ updateKey }}
         <SRSToolbar :current-doc="doc" @create-new="onCreateNewDoc" @load-doc="onLoadDoc" :key="doc.id" />
         <div class="settings border p-3" v-if="false">
             <h5 role="button" class="pointer" v-b-toggle="'collapse-settings'">
