@@ -1,13 +1,16 @@
 <template>
     <!-- Dependencies Management -->
     <div class="deps border p-3">
-        <h5 role="button" class="pointer user-select-none" v-b-toggle="`collapse-${requirement._key}`">Dependencies</h5>
+        <h5 role="button" class="pointer user-select-none" v-b-toggle="`collapse-${requirement._key}`"
+            @click="setOptions">Dependencies</h5>
         <BCollapse :id="`collapse-${requirement._key}`">
             <div class="dep d-flex justify-content-between align-items-center gap-4"
-                v-for="(dep, idx) in selectedDependencies" :key="dep?._key">
+                v-for="(dep, idx) in selectedDependencies">
+
                 <LazyChosen v-model="selectedDependencies[idx]" :options="options"
                     :initial-value="options.find((o) => o.key === selectedDependencies[idx]?._key)"
-                    :key="options.length + updateKey" @mouseenter="setOptions" />
+                    @mouseenter="setOptions"
+                    :key="JSON.stringify(options.map(o => o.key)) + selectedDependencies[idx]?._key" />
 
                 <div class="remove-one-btn text-danger">
                     <FaIcon icon="minus-circle" class="" role="button" @click="selectedDependencies.splice(idx, 1)" />
@@ -54,10 +57,9 @@ const emit = defineEmits<{
 
 const selectedDependencies = ref<ReqWNull>([]);
 
-const options = shallowRef<ChosenOption[]>([]);
+const options = ref<ChosenOption[]>([]);
 
 const setOptions = () => {
-    console.log('setting options')
     options.value = dependencies
         .filter(opt => opt._key !== requirement._key)
         .map((opt) => {
@@ -69,6 +71,7 @@ const setOptions = () => {
                 disabled: !!selectedDependencies.value.find(d => opt._key === d?._key) || isCircular
             };
         });
+    console.log(options.value);
 };
 
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement, visited = new Set<string>()): boolean => {
