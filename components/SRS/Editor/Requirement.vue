@@ -91,8 +91,8 @@ const resetIds = (type: ReqType, requirements: SRS.Requirement[]) => {
 };
 
 const splice = (type: ReqType, index: number) => {
-    // const updatedReqs = resetIds(type, model.value.requirements[type].filter((_, idx) => idx !== index));
     model.value.requirements[type].splice(index, 1);
+    resetIds(type, model.value.requirements[type]);
 };
 
 </script>

@@ -1,6 +1,6 @@
 <template>
-    <div class="chosen-select user-select-none position-relative w-100 pb-1">
-        <div class="selected-value px-3 border pointer" role="button" @click="toggle">
+    <div class="chosen-select user-select-none position-relative w-100 pb-1" :key="updateKey">
+        <div class="selected-value px-3 border pointer" role="button" @click="toggle" @mouseenter="emit('mouseenter')">
             {{ initialValue?.label || selected?.label || 'Select an option' }}
         </div>
         <Transition mode="out-in" name="fade">
@@ -10,9 +10,11 @@
                     <BInputGroupText>Filter</BInputGroupText>
                     <BFormInput v-model="search"></BFormInput>
                 </BInputGroup>
-                <div class="chosen-option px-3 border pointer" v-for="(option, idx) in filteredOptions"
-                    :key="option.key" v-if="filteredOptions.length > 0" :class="{ disabled: option.disabled }"
-                    @click="!option.disabled && select(idx, option)">
+                {{ selected?.label }}
+                <div class="chosen-option px-3 border pointer"
+                    v-for="(option, idx) in (search.length ? filteredOptions : options)" :key="option.key"
+                    v-if="options.length > 0" :class="{ disabled: (option.disabled || selected?.key === option.key) }"
+                    @click="!option.disabled && select(idx, option)" @mouseenter="emit('hover', idx, option)">
                     {{ option.label }}
                 </div>
                 <div v-else class="text-center mt-4 py-2">
@@ -33,9 +35,11 @@ const { isOpen, toggle, onClose } = useDisclosure();
 const emit = defineEmits<{
     (e: 'select', optionIdx: number, data: ChosenOption): void;
     (e: 'clear', data: ChosenOption): void;
+    (e: 'hover', optionIdx: number, data: ChosenOption): void;
+    (e: 'mouseenter'): void;
 }>();
 
-const { options } = defineProps<{
+const { options, initialValue } = defineProps<{
     options: ChosenOption[];
     initialValue?: ChosenOption;
 }>();
@@ -43,11 +47,15 @@ const { options } = defineProps<{
 const model = defineModel({
     required: true
 });
-
+const { updateKey } = useSrsUpdateKey();
 const selected = ref<ChosenOption>();
 const search = ref<string>('');
 
-const filteredOptions = computed(() => search.value != '' ? options.filter(o => o.label.toLowerCase().includes(search.value.toLowerCase())) : options);
+const filteredOptions = computed(() => {
+    console.log('computing');
+    updateKey.value;
+    return search.value.length > 0 ? options.filter(o => o.label.toLowerCase().includes(search.value.toLowerCase())) : [];
+});
 
 const select = (idx: number, option: ChosenOption) => {
     selected.value = option;

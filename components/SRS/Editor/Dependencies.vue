@@ -7,7 +7,8 @@
                 v-for="(dep, idx) in selectedDependencies" :key="dep?._key">
                 <LazyChosen v-model="selectedDependencies[idx]" :options="options"
                     :initial-value="options.find((o) => o.key === selectedDependencies[idx]?._key)"
-                    :key="options.length" />
+                    :key="options.length + updateKey" @mouseenter="setOptions" />
+
                 <div class="remove-one-btn text-danger">
                     <FaIcon icon="minus-circle" class="" role="button" @click="selectedDependencies.splice(idx, 1)" />
                 </div>
@@ -45,6 +46,7 @@ const { requirement, dependencies } = defineProps<{
 }>();
 
 type ReqWNull = typeof requirement.dependencies;
+const { updateKey, tick } = useSrsUpdateKey();
 
 const emit = defineEmits<{
     (e: 'set-dependencies', data: ReqWNull): void;
@@ -52,21 +54,22 @@ const emit = defineEmits<{
 
 const selectedDependencies = ref<ReqWNull>([]);
 
-const options = computed(() => {
-    console.log('computing ooptions');
-    return dependencies
+const options = shallowRef<ChosenOption[]>([]);
+
+const setOptions = () => {
+    console.log('setting options')
+    options.value = dependencies
         .filter(opt => opt._key !== requirement._key)
         .map((opt) => {
-            const circularDep = willCircularDepend(opt, requirement);
+            const isCircular = willCircularDepend(opt, requirement);
             return {
+                label: `${opt.id} ${opt.title}${isCircular ? ' (circular)' : ''}`,
                 key: opt._key,
-                label: `${opt.id} ${opt.title}${circularDep ? ' (circular)' : ''} `,
                 value: opt,
-                disabled: !!selectedDependencies.value.find(d => opt._key === d?._key) || circularDep
+                disabled: !!selectedDependencies.value.find(d => opt._key === d?._key) || isCircular
             };
         });
-});
-
+};
 
 const willCircularDepend = (from: SRS.Requirement, to: SRS.Requirement, visited = new Set<string>()): boolean => {
     if (!from || !from.dependencies) return false;
