@@ -86,11 +86,9 @@ const sendMessageRight = (_: unknown, val?: string) => {
 };
 
 const scroll = (e: WheelEvent) => {
-    console.log(e);
     chatRef.value?.scrollBy({
         top: 50 * e.deltaY / 100,
     });
-    console.log(chatRef.value);
 };
 
 </script>

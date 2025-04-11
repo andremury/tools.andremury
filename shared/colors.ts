@@ -45,10 +45,10 @@ function randomColor(as: 'rgb' | 'hsl' | 'hex') {
     const hue = Math.floor(Math.random() * 180);
     const sat = Math.floor(Math.random() * 100);
     const lig = 100 - Math.floor(Math.random() * 70);
-    console.log(hue, sat, lig);
+
     if (as === 'hsl') return `hsl(${hue}, ${sat}%, ${lig}%)`;
     const [r, g, b] = hslToRgb(hue / 180, sat / 100, lig / 100);
-    console.log(r, g, b);
+
     if (as === 'rgb') return `rgb(${r}, ${g}, ${b})`;
     return rgbToHex([r, g, b]);
 }

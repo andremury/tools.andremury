@@ -92,7 +92,6 @@ const pushRequirement = (type: ReqType) => {
 };
 
 const resetIds = (type: ReqType, requirements: SRS.Requirement[]) => {
-    console.log(requirements);
     return requirements.map((item, index) => {
         const { id } = getId(type, index + 1);
         item.id = id;

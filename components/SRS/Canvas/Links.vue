@@ -28,7 +28,6 @@ const generateDependencyLink = (from: string, target: string) => {
     const endNode = document.getElementById(target);
     if (!startNode || !endNode) return '';
 
-
     // Starts on the very middle of the first box
     const fromX = (startNode.offsetWidth / 2) + (startNode.offsetLeft);
     const fromY = (startNode.offsetHeight / 2) + (startNode.offsetTop);

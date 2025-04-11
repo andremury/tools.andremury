@@ -81,7 +81,6 @@ const nextField = (event: KeyboardEvent, side: number, idx: number) => {
 };
 
 const addTable = (idx: number) => {
-    console.log(idx);
     if (!tables.value[idx]) return;
     tables.value[idx].push({
         name: `Título`,
@@ -156,7 +155,6 @@ const importJSON = () => {
 const exportJSON = () => {
     navigator.clipboard.writeText(JSON.stringify(tables.value));
     alert('JSON copied to clipboard');
-    console.log(JSON.stringify(tables.value));
 };
 </script>
 

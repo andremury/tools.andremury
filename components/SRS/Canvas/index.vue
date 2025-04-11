@@ -1,12 +1,14 @@
 <template>
-    <div class="srs-canvas">
-        <div class="canvas-content" :class="{ 'open bg-dark p-3 overflow-auto': isOpen, expanded }">
+    <div class="srs-canvas ">
+        <div class="canvas-content overflow-hidden" :class="{ 'open bg-dark p-3 overflow-auto': isOpen, expanded }"
+            @wheel="setPan">
             <div class="icon border rounded-circle bg-white shadow-sm text-info d-flex align-items-center justify-content-center pointer"
                 v-if="!isOpen" role="button" @click="toggle">
                 <FaIcon icon="diagram-project" class="fa-2x mt-1" />
             </div>
             <Transition mode="out-in">
                 <div v-if="isOpen">
+                    {{ pan }} {{ lastPointerPosition }}
                     <div class="headers w-100 mb-5">
                         <div class="d-flex gap-3 position-absolute top-0 end-0 pr-4 pt-2">
                             <div class="close pointer " role="button" @click="toggleExpand">
@@ -19,9 +21,11 @@
                         <h5 class="text-center">Requirement Map</h5>
                     </div>
                     <div class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative"
-                        v-if="data.requirements.functional.length > 0">
+                        v-if="data.requirements.functional.length > 0" :style="{
+                            transform: `perspective(500px) translate3d(${pan.x}px,${pan.y}px,${pan.z}px) scale(1)`
+                        }" @mousedown="watchDrag">
                         <SRSCanvasItem :requirement="item" v-for="(item, index) in data.requirements.functional"
-                            :key="item._key" @click="selectItem(item)" role="button" :id="item._key"
+                            :key="item._key" @click="!isDragging && selectItem(item)" role="button" :id="item._key"
                             @mouseenter="highlightDeps(item)" @mouseleave="removeHighlights" />
                         <SRSCanvasLinks :requirements="data.requirements.functional"
                             :key="data.id + data.requirements.functional.length" />
@@ -50,9 +54,74 @@ const { isOpen: expanded, toggle: toggleExpand } = useDisclosure();
 
 const selectedItem = ref<SRS.Requirement>();
 
+const pan = ref({ x: 0, y: 0, z: 0 });
+const isDragging = ref(false);
+const lastPointerPosition = ref<{ x: number, y: number; }>({ x: 0, y: 0 });
+
+const setPosition = (e: MouseEvent) => {
+    pan.value.x += (e.clientX - lastPointerPosition.value.x);
+    pan.value.y += (e.clientY - lastPointerPosition.value.y);
+
+    lastPointerPosition.value = {
+        x: e.clientX,
+        y: e.clientY,
+    };
+};
+
+const onDragEnd = (e: MouseEvent) => {
+    e.preventDefault();
+    window.removeEventListener('mousemove', setPosition);
+    window.removeEventListener('mouseup', onDragEnd);
+    setTimeout(() => {
+        isDragging.value = false;
+    }, 100);
+};
+
+const onDragStart = (e: MouseEvent) => {
+    isDragging.value = true;
+    window.addEventListener('mouseup', onDragEnd);
+    window.addEventListener('mousemove', setPosition);
+};
+
+const watchDrag = (e: MouseEvent) => {
+    lastPointerPosition.value = {
+        x: e.clientX,
+        y: e.clientY,
+    };
+    const watchPointer = (e: MouseEvent) => {
+        if (Math.abs(e.clientX - lastPointerPosition.value.x) > 10 || Math.abs(e.clientY - lastPointerPosition.value.y) > 10) {
+            window.removeEventListener('mousemove', watchPointer);
+            e.preventDefault();
+            onDragStart(e);
+        }
+    };
+
+    window.addEventListener('mousemove', watchPointer);
+    window.addEventListener('mouseup', () => {
+        window.removeEventListener('mousemove', watchPointer);
+    });
+};
+
+const setPan = (e: WheelEvent) => {
+    e.preventDefault();
+
+    const delta = -e.deltaY / 2;
+
+    pan.value.z += delta;
+
+    if (pan.value.z < -1000) {
+        pan.value.z = -1000;
+    }
+    else if (pan.value.z > 0) {
+        pan.value.z = 0;
+    }
+    else {
+        pan.value.y += delta;
+
+    }
+};
 
 const selectItem = (item: SRS.Requirement) => {
-    console.log('opening modal');
     if (selectedItem.value?.id === item.id)
         selectedItem.value = undefined;
     else {
@@ -75,12 +144,10 @@ const highlightDeps = (item: SRS.Requirement) => {
         if (!dep) return;
         const reqEl = document.getElementById(dep._key);
         reqEl?.classList.add('ref-highlight');
-        console.log(`req-dep-link-${dep._key}`);
     });
 
     const wrapper = document.getElementById(`req-dep-link-${item._key}`);
     if (!wrapper) return;
-    console.log(wrapper.children[0]);
     Object.values(wrapper.children).forEach(svg => {
         if (svg.children[0]) {
             svg.children[0].classList.add('ref-highlight');
