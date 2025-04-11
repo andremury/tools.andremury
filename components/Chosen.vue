@@ -11,8 +11,9 @@
                     <BFormInput v-model="search"></BFormInput>
                 </BInputGroup>
                 {{ selected?.label }}
-                <div class="chosen-option px-3 border pointer" v-for="(option, idx) in options" :key="option.key"
-                    v-if="options.length > 0" :class="{ disabled: (option.disabled || selected?.key === option.key) }"
+                <div class="chosen-option px-3 border pointer" v-for="(option, idx) in filteredOptions"
+                    :key="option.key" v-if="options.length > 0"
+                    :class="{ disabled: (option.disabled || selected?.key === option.key) }"
                     @click="!option.disabled && select(idx, option)" @mouseover="emit('hover', idx, option)">
                     {{ option.label }}
                 </div>
@@ -37,7 +38,7 @@ const emit = defineEmits<{
     (e: 'mouseenter'): void;
 }>();
 
-const { initialValue } = defineProps<{
+const props = defineProps<{
     options: ChosenOption[];
     initialValue?: ChosenOption;
 }>();
@@ -45,15 +46,13 @@ const { initialValue } = defineProps<{
 const model = defineModel({
     required: true
 });
-const { updateKey } = useSrsUpdateKey();
-const selected = ref<ChosenOption | undefined>(initialValue);
+const selected = ref<ChosenOption | undefined>(props.initialValue);
 const search = ref<string>('');
 
-// const filteredOptions = computed(() => {
-//     console.log('computing');
-//     updateKey.value;
-//     return search.value.length > 0 ? options.filter(o => o.label.toLowerCase().includes(search.value.toLowerCase())) : [];
-// });
+const filteredOptions = computed(() => search.value.length > 0
+    ? props.options.filter(o => o.label.toLowerCase().includes(search.value.toLowerCase()))
+    : props.options
+);
 
 const select = (idx: number, option: ChosenOption) => {
     selected.value = option;

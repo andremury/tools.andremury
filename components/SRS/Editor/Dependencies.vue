@@ -7,9 +7,8 @@
             <div class="dep d-flex justify-content-between align-items-center gap-4"
                 v-for="(dep, idx) in selectedDependencies">
 
-                <LazyChosen v-model="selectedDependencies[idx]" :options="options"
+                <LazyChosen v-model="selectedDependencies[idx]" :options="options" @mouseenter="setOptions"
                     :initial-value="options.find((o) => o.key === selectedDependencies[idx]?._key)"
-                    @mouseenter="setOptions"
                     :key="JSON.stringify(options.map(o => o.key)) + selectedDependencies[idx]?._key" />
 
                 <div class="remove-one-btn text-danger">
@@ -49,7 +48,6 @@ const { requirement, dependencies } = defineProps<{
 }>();
 
 type ReqWNull = typeof requirement.dependencies;
-const { updateKey, tick } = useSrsUpdateKey();
 
 const emit = defineEmits<{
     (e: 'set-dependencies', data: ReqWNull): void;
@@ -59,6 +57,7 @@ const selectedDependencies = ref<ReqWNull>([]);
 
 const options = ref<ChosenOption[]>([]);
 
+// TODO: apply debounce on it
 const setOptions = () => {
     options.value = dependencies
         .filter(opt => opt._key !== requirement._key)
