@@ -16,8 +16,8 @@
                         <input :name="key" v-model="value.title" :placeholder="startCase(key)" class="srs-input w-75" />
                     </h4>
                 </label>
-                <div class="editor srs-input">
-                    <QuillEditor v-model:content="value.content" theme="bubble" :id="`quill-${key}`" content-type="html"
+                <div class="editor srs-input" v-if="QEditor">
+                    <QEditor v-model:content="value.content" theme="bubble" :id="`quill-${key}`" content-type="html"
                         :toolbar="toolbarOptions" />
                 </div>
                 <div class="requirement-specifications" v-if="model?.requirements">
@@ -43,6 +43,8 @@ import type { QuillEditor } from '@vueup/vue-quill';
 
 const mounted = ref(false);
 const model = defineModel<SRS.Specification>();
+
+const QEditor = ref<typeof QuillEditor>();
 
 const visibleSections = computed(() => Object.entries(model?.value?.sections || {}).filter(
     ([_, value]) => !value.invisible
@@ -72,9 +74,10 @@ const toolbarOptions = [
     // ['clean']                                         // remove formatting button
 ];
 
-onMounted(() => {
+onMounted(async () => {
     if (typeof document !== "undefined") {
         mounted.value = true;
+        QEditor.value = (await import('@vueup/vue-quill')).QuillEditor;
     }
 });
 </script>
