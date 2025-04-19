@@ -1,96 +1,94 @@
 export interface Table {
-    name: string;
-    fields: A4Field[];
+  name: string;
+  fields: A4Field[];
 }
 
 export interface A4Field {
-    name: string;
-    reps?: number;
-    sets?: number;
-    weight?: number;
+  name: string;
+  reps?: number;
+  sets?: number;
+  weight?: number;
 }
 
 export interface ChosenOption<T = any> {
-    label: string;
-    key: string;
-    value: T;
-    disabled?: boolean;
+  label: string;
+  key: string;
+  value: T;
+  disabled?: boolean;
 }
 
-
 export namespace SRS {
+  export type Priority = 'Essential' | 'Important' | 'Desirable';
 
-    export type Priority = 'Essential' | 'Important' | 'Desirable';
+  export type SavedDocsDict = Record<number, Specification>;
 
-    export type SavedDocsDict = Record<number, Specification>;
+  export interface FieldSpec {
+    id: number;
+    name: string;
+    description: string;
+    type: string;
+    required: boolean;
+  }
 
-    export interface FieldSpec {
-        id: number;
-        name: string;
-        description: string;
-        type: string;
-        required: boolean;
-    }
+  export interface Entity {
+    name: string;
+    description?: string;
+    fields: FieldSpec[];
+  }
 
-    export interface Entity {
-        name: string;
-        description?: string;
-        fields: FieldSpec[];
-    }
+  export interface ShortRequirement {
+    id: string;
+    _key: string;
+    title: string;
+    color?: string;
+  }
 
-    export interface ShortRequirement {
-        id: string;
-        _key: string;
-        title: string;
-        color?: string;
-    }
+  export interface Requirement extends ShortRequirement {
+    done?: boolean;
+    group?: string;
+    actors?: string;
+    text: string;
+    dependencies: (Requirement | null)[];
+    relatedRequirements: ShortRequirement[];
+    priority: Priority;
+    entities: Entity[];
+  }
 
-    export interface Requirement extends ShortRequirement {
-        group?: string;
-        actors?: string;
-        text: string;
-        dependencies: (Requirement | null)[];
-        relatedRequirements: ShortRequirement[];
-        priority: Priority;
-        entities: Entity[];
-    }
+  export interface Section {
+    title: string;
+    content: string;
+    subsection?: Section[];
+    invisible?: boolean;
+  }
 
+  export interface Audit {
+    date: Date;
+    version: number;
+    author: string;
+    description: string;
+  }
 
-    export interface Section {
-        title: string;
-        content: string;
-        subsection?: Section[];
-        invisible?: boolean;
-    }
-
-    export interface Audit {
-        date: Date;
-        version: number;
-        author: string;
-        description: string;
-    }
-
-    export interface Specification {
-        id: number;
-        name: string;
-        subtitle?: string;
-        version: number;
-        audits: Audit[];
-        revision: Audit[];
-        sections: {
-            introduction: Section;
-            productOverview: Section;
-            constraints: Section;
-            functionalRequirements: Section;
-            nonFunctionalRequirements: Section;
-            trackability: Section;
-            modifications: Section;
-            developmentStrategy: Section;
-            completionCriteria: Section;
-        };
-        requirements: {
-            functional: Requirement[];
-            nonFunctional: Requirement[];
-        };
-    }
+  export interface Specification {
+    id: number;
+    name: string;
+    subtitle?: string;
+    version: number;
+    audits: Audit[];
+    revision: Audit[];
+    sections: {
+      introduction: Section;
+      productOverview: Section;
+      constraints: Section;
+      functionalRequirements: Section;
+      nonFunctionalRequirements: Section;
+      trackability: Section;
+      modifications: Section;
+      developmentStrategy: Section;
+      completionCriteria: Section;
+    };
+    requirements: {
+      functional: Requirement[];
+      nonFunctional: Requirement[];
+    };
+  }
 }
