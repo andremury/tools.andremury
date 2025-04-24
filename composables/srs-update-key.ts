@@ -8,7 +8,6 @@ export const useSrsUpdateKey = () => {
             clearTimeout(timeout);
         }
         timeout = setTimeout(() => {
-            console.log('ticking..')
             updateKey.value++;
             timeout = null;
         }, 300);
