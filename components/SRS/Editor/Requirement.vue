@@ -24,7 +24,12 @@
           <div class="p-3 border">
             <SRSEditorDefinition
               :requirement="requirement"
-              @delete="confirmDelete('functional', index)"
+              @delete="
+                confirmDelete(
+                  nonFunctional ? 'nonFunctional' : 'functional',
+                  index
+                )
+              "
             />
             <!-- Priority -->
             <select
@@ -104,8 +109,12 @@ const getId = (type: ReqType, index?: number) => {
 };
 
 const confirmDelete = (type: ReqType, index: number) => {
-  if (confirm('Are you sure? You cannot undo this operation.')) {
-    splice('functional', index);
+  if (
+    confirm(
+      `Are you sure? You cannot undo this operation. ${type} - ${requirements.value[index].title}`
+    )
+  ) {
+    splice(type, index);
   }
 };
 
