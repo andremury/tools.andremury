@@ -16,7 +16,7 @@
         <BCol
           cols="12"
           lg="6"
-          v-for="(requirement, index) in requirements"
+          v-for="(requirement, index) in requirementsPage"
           :key="requirement._key"
           :id="`requirement-def-${requirement._key}`"
           :class="{ 'mt-3 pt-3': index > 1 }"
@@ -47,18 +47,24 @@
 
             <BCollapse :id="`collapse-requirement-${requirement._key}`">
               <!-- Description -->
-              <SRSEditorDescription :requirement="requirement" />
-              <!-- Dependencies -->
-              <SRSEditorDependencies
-                v-if="!nonFunctional"
-                :requirement="requirement"
-                :dependencies="requirements"
-              />
-              <!-- Entities -->
-              <SRSEditorEntities
-                v-if="!nonFunctional"
-                :requirement="requirement"
-              />
+              <template #default="{ visible }">
+                <Transition name="fade" mode="out-in">
+                  <div v-if="visible">
+                    <SRSEditorDescription :requirement="requirement" />
+                    <!-- Dependencies -->
+                    <SRSEditorDependencies
+                      v-if="!nonFunctional"
+                      :requirement="requirement"
+                      :dependencies="requirements"
+                    />
+                    <!-- Entities -->
+                    <SRSEditorEntities
+                      v-if="!nonFunctional"
+                      :requirement="requirement"
+                    />
+                  </div>
+                </Transition>
+              </template>
             </BCollapse>
           </div>
         </BCol>
@@ -99,6 +105,8 @@ const requirements = computed(
     model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional'] ||
     []
 );
+
+const requirementsPage = computed(() => requirements.value.slice(0, 10));
 
 const getId = (type: ReqType, index?: number) => {
   const len = index || model.value.requirements[type].length + 1;
