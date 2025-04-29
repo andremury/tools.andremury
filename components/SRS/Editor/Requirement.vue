@@ -35,7 +35,8 @@
             <select
               class="form-select req-description text-white mt-2"
               required
-              v-model="requirement.priority"
+              :value="requirement.priority"
+              @change="updatePriority(requirement, $event.target?.value)"
               v-if="!nonFunctional"
             >
               <option class="text-dark" value="Essential">Essential</option>
@@ -105,6 +106,11 @@ const requirements = computed(
     model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional'] ||
     []
 );
+
+function updatePriority(requirement: SRS.Requirement, value?: string) {
+  if (!value) return;
+  requirement.priority = value as SRS.Priority;
+}
 
 const getId = (type: ReqType, index?: number) => {
   const len = index || model.value.requirements[type].length + 1;
