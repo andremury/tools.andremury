@@ -16,7 +16,7 @@
         <BCol
           cols="12"
           lg="6"
-          v-for="(requirement, index) in requirementsPage"
+          v-for="(requirement, index) in requirements"
           :key="requirement._key"
           :id="`requirement-def-${requirement._key}`"
           :class="{ 'mt-3 pt-3': index > 1 }"
@@ -105,8 +105,6 @@ const requirements = computed(
     model.value.requirements[nonFunctional ? 'nonFunctional' : 'functional'] ||
     []
 );
-
-const requirementsPage = computed(() => requirements.value.slice(0, 10));
 
 const getId = (type: ReqType, index?: number) => {
   const len = index || model.value.requirements[type].length + 1;
