@@ -41,6 +41,7 @@
 import { toast } from 'vue3-toastify';
 import { LocalStorage } from '~/shared/SafeLocalStorage';
 import type { SRS } from '~/shared/types';
+import { normalizeRequirements } from '~/shared/normalizeRequirements';
 
 const { currentDoc } = defineProps<{
   currentDoc: SRS.Specification;
@@ -112,7 +113,8 @@ const load = (docId: number) => {
     return;
   }
 
-  emit('load-doc', loadedDoc);
+  const normalizedDoc = normalizeRequirements(loadedDoc);
+  emit('load-doc', normalizedDoc);
 
   setTimeout(() => {
     saved.value = true;
@@ -139,30 +141,6 @@ const exportJson = () => {
   downloadAnchorNode.remove();
 
   toast.info(`Download of ${docFileName} started.`);
-};
-
-const normalizeRequirements = (srs: SRS.Specification): SRS.Specification => {
-  return {
-    ...srs,
-    requirements: {
-      nonFunctional: srs.requirements.nonFunctional,
-      functional: srs.requirements.functional.map((req) => ({
-        ...req,
-        dependencies: req.dependencies.map(
-          (dep): (typeof req.dependencies)[0] =>
-            !!dep
-              ? {
-                  _key: dep?._key,
-                  id: dep?.id,
-                  relatedRequirements: dep?.relatedRequirements,
-                  title: dep?.title,
-                  color: dep?.color,
-                }
-              : null
-        ),
-      })),
-    },
-  };
 };
 
 const importJson = (e: Event) => {
