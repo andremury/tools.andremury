@@ -43,13 +43,16 @@ export namespace SRS {
     color?: string;
   }
 
-  export interface Requirement extends ShortRequirement {
+  export interface Dependency extends ShortRequirement {
+    relatedRequirements: ShortRequirement[];
+  }
+
+  export interface Requirement extends Dependency {
     done?: boolean;
     group?: string;
     actors?: string;
     text: string;
-    dependencies: (Requirement | null)[];
-    relatedRequirements: ShortRequirement[];
+    dependencies: (Dependency | null)[];
     priority: Priority;
     entities: Entity[];
   }

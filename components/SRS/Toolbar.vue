@@ -141,6 +141,30 @@ const exportJson = () => {
   toast.info(`Download of ${docFileName} started.`);
 };
 
+const normalizeRequirements = (srs: SRS.Specification): SRS.Specification => {
+  return {
+    ...srs,
+    requirements: {
+      nonFunctional: srs.requirements.nonFunctional,
+      functional: srs.requirements.functional.map((req) => ({
+        ...req,
+        dependencies: req.dependencies.map(
+          (dep): (typeof req.dependencies)[0] =>
+            !!dep
+              ? {
+                  _key: dep?._key,
+                  id: dep?.id,
+                  relatedRequirements: dep?.relatedRequirements,
+                  title: dep?.title,
+                  color: dep?.color,
+                }
+              : null
+        ),
+      })),
+    },
+  };
+};
+
 const importJson = (e: Event) => {
   const el = e.currentTarget as HTMLInputElement;
   if (el.files?.length !== 1) {
@@ -167,7 +191,9 @@ const importJson = (e: Event) => {
       return;
     }
 
-    emit('load-doc', importedDoc);
+    const normalizedDoc = normalizeRequirements(importedDoc);
+
+    emit('load-doc', normalizedDoc);
 
     setTimeout(() => {
       saved.value = true;

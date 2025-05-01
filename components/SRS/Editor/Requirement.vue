@@ -35,8 +35,7 @@
             <select
               class="form-select req-description text-white mt-2"
               required
-              :value="requirement.priority"
-              @change="updatePriority(requirement, $event.target?.value)"
+              v-model="requirement.priority"
               v-if="!nonFunctional"
             >
               <option class="text-dark" value="Essential">Essential</option>

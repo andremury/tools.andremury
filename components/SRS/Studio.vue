@@ -125,16 +125,6 @@ const tableOpts = computed(() => {
 
   return { fields, items };
 });
-
-const { tick, updateKey } = useSrsUpdateKey();
-
-watch(
-  doc,
-  (v) => {
-    tick();
-  },
-  { deep: true }
-);
 </script>
 
 <style>
