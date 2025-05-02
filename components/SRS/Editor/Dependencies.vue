@@ -15,7 +15,7 @@
         v-for="(dep, idx) in selectedDependencies"
       >
         <LazyChosen
-          @select="setDependency"
+          @select="(_, data) => setDependency(idx, data)"
           :options="options"
           @mouseenter="setOptions"
           :initial-value="
@@ -122,7 +122,6 @@ const setOptions = () => {
           isCircular,
       };
     });
-  console.log(options.value);
 };
 
 const willCircularDepend = (
