@@ -21,7 +21,7 @@
 import type { SRS } from '~/shared/types';
 
 const model = defineModel<SRS.Specification>({ required: true });
-const srsTab = useCurrentSReTab();
+const srsTab = useCurrentSRSTab();
 
 const onSelectTab = (to: number) => {
   srsTab.value = TabTypes[to];

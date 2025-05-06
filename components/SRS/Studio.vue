@@ -25,9 +25,10 @@
     <SRSEditor v-model="doc" class="z1" />
     <!-- <SRSDocument :data="doc" class="z1" /> -->
     <FloatingMenu>
+      <ToTop />
       <SRSDocumentIndex
-        :data="doc.requirements.functional"
-        :key="`${doc.id}_SRSDocumentIndex`"
+        :data="requirementsIndexList"
+        :key="`${doc.id}_SRSDocumentIndex_${currentTab}`"
       />
       <SRSSummary :data="doc" :key="`${doc.id}_SRSSummary`" />
       <SRSCanvas :data="doc" :key="`${doc.id}_SRSCanvas`" />
@@ -101,6 +102,21 @@ const emptyObj = () =>
   };
 
 const doc = ref<SRS.Specification>({ ...emptyObj() });
+
+const currentTab = useCurrentSRSTab();
+const requirementsIndexList = computed(() => {
+  const { functional, nonFunctional } = doc.value.requirements;
+  switch (currentTab.value) {
+    case 'Content':
+      return functional.concat(nonFunctional);
+    case 'Non-Functional':
+      return nonFunctional;
+    case 'Functional':
+      return functional;
+    default:
+      return [];
+  }
+});
 
 const onCreateNewDoc = () => {
   doc.value = { ...emptyObj() };

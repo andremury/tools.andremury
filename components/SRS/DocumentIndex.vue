@@ -10,7 +10,7 @@
             <BInputGroupText><faIcon icon="search" /></BInputGroupText>
             <BFormInput v-model="search" />
           </BInputGroup>
-          <div class="summary-list">
+          <div class="summary-list py-3">
             <div
               class="summary-item"
               v-for="item in requirements"
@@ -19,7 +19,7 @@
               <a
                 @click="highlight(`${getRequirementId(currentTab, item._key)}`)"
                 :href="`#${getRequirementId(currentTab, item._key)}`"
-                >{{ item.title }}</a
+                >[{{ item.id }}] {{ item.title }}</a
               >
             </div>
             <div v-else class="text-center p-4">Nothing to show.</div>
@@ -49,17 +49,21 @@ import type { SRS } from '~/shared/types';
 import { getRequirementId } from '~/shared/getRequirementKey';
 
 const { data } = defineProps<{
-  data: SRS.Requirement[];
+  data: SRS.ShortRequirement[];
 }>();
 
 const { isOpen, toggle } = useDisclosure();
 
 const search = ref('');
 
-const currentTab = useCurrentSReTab();
+const currentTab = useCurrentSRSTab();
 
 const requirements = computed(() =>
-  data.filter((r) => r.title.toLowerCase().includes(search.value.toLowerCase()))
+  data.filter((r) =>
+    `${r.id.toLowerCase()} ${r.title.toLowerCase()}`.includes(
+      search.value.toLowerCase()
+    )
+  )
 );
 
 const highlight = (elId: string) => {

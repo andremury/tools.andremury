@@ -130,7 +130,7 @@ defineProps<{
   requirement: SRS.Requirement;
   nonFunctional?: boolean;
 }>();
-const currentTab = useCurrentSReTab();
+const currentTab = useCurrentSRSTab();
 const entityFields: TableField<SRS.FieldSpec>[] = [
   {
     key: 'name',
