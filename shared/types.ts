@@ -41,6 +41,8 @@ export namespace SRS {
     _key: string;
     title: string;
     color?: string;
+    done?: boolean;
+    group?: string;
   }
 
   export interface Dependency extends ShortRequirement {
@@ -48,8 +50,6 @@ export namespace SRS {
   }
 
   export interface Requirement extends Dependency {
-    done?: boolean;
-    group?: string;
     actors?: string;
     text: string;
     dependencies: (Dependency | null)[];

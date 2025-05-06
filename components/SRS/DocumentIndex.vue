@@ -16,6 +16,10 @@
               v-for="item in requirements"
               v-if="requirements.length > 0"
             >
+              <faIcon
+                :icon="item.done ? 'check-circle' : 'times-circle'"
+                :class="item.done ? 'text-success' : 'text-danger'"
+              />
               <a
                 @click="highlight(`${getRequirementId(currentTab, item._key)}`)"
                 :href="`#${getRequirementId(currentTab, item._key)}`"
@@ -59,11 +63,29 @@ const search = ref('');
 const currentTab = useCurrentSRSTab();
 
 const requirements = computed(() =>
-  data.filter((r) =>
-    `${r.id.toLowerCase()} ${r.title.toLowerCase()}`.includes(
-      search.value.toLowerCase()
-    )
-  )
+  data.filter((r) => {
+    const keyFilters = search.value.match(/is:(done|undone|FR|NF)/);
+    const conditions = [];
+    if (keyFilters?.includes('is:done')) conditions.push(r.done === true);
+    else if (keyFilters?.includes('is:undone')) conditions.push(!r.done);
+    if (keyFilters?.includes('is:FR')) conditions.push(r.id.startsWith('FR'));
+    if (keyFilters?.includes('is:NF')) conditions.push(r.id.startsWith('NF'));
+    let textSearch = search.value;
+    if (keyFilters) {
+      textSearch = search.value
+        .split(' ')
+        .filter((item) => !keyFilters.includes(item))
+        .join(' ');
+    }
+
+    conditions.push(
+      `${r.id.toLowerCase()} ${r.title.toLowerCase()}`.includes(
+        textSearch.toLowerCase()
+      )
+    );
+    console.log(textSearch, conditions);
+    return conditions.every((c) => c);
+  })
 );
 
 const highlight = (elId: string) => {
