@@ -15,9 +15,11 @@
       </div>
       <Transition mode="out-in">
         <div v-if="isOpen">
-          {{ pan }} {{ zoom }} {{ lastPointerPosition }}
+          <!-- {{ pan }} {{ zoom }} {{ lastPointerPosition }} -->
           <div class="headers w-100 mb-5">
-            <div class="d-flex gap-3 position-absolute top-0 end-0 pr-4 pt-2">
+            <div
+              class="action-buttons d-flex gap-3 position-absolute end-0 pr-4 pt-2"
+            >
               <div class="close pointer" role="button" @click="toggleExpand">
                 <FaIcon :icon="expanded ? 'minimize' : 'expand'" />
               </div>
@@ -245,19 +247,18 @@ watch(isOpen, (open) => {
 }
 
 .srs-canvas > .canvas-content {
-  position: fixed;
   z-index: 3;
   height: 50px;
   width: 50px;
-  right: 20px;
-  bottom: 20px;
   transition: all 200ms;
 
   &.open {
     height: 50dvh;
-    width: 100%;
+    width: 100dvw;
     right: 0;
     bottom: 0;
+    margin-right: -10px;
+    margin-bottom: -10px;
 
     &.expanded {
       height: 100dvh !important;
@@ -266,6 +267,9 @@ watch(isOpen, (open) => {
 
   .close {
     z-index: 999;
+  }
+  .action-buttons {
+    margin-top: -10px;
   }
 
   .icon {

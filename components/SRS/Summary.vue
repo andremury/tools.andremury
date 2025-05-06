@@ -1,9 +1,15 @@
 <template>
-  <div class="srs-summary bg-white text-dark p-3 rounded d-flex gap-3">
-    <div>
+  <div
+    class="srs-summary user-select-none bg-white text-dark rounded d-flex px-2 gap-3 pointer justify-content-center align-items-center"
+    role="button"
+    :class="{ open: isOpen }"
+    @click="toggle"
+  >
+    <FaIcon icon="check-circle" class="fa-2x" v-if="!isOpen" />
+    <div v-if="isOpen">
       FR Done: {{ functionalDone }}/{{ doc.requirements.functional.length }}
     </div>
-    <div>
+    <div v-if="isOpen">
       NF Done: {{ nFunctionalDone }}/{{ doc.requirements.nonFunctional.length }}
     </div>
   </div>
@@ -16,6 +22,8 @@ const props = defineProps<{
 }>();
 
 const { data: doc } = toRefs(props);
+
+const { isOpen, toggle } = useDisclosure();
 
 const functionalDone = computed(() =>
   doc.value.requirements.functional.reduce(
@@ -32,11 +40,14 @@ const nFunctionalDone = computed(() =>
 </script>
 <style lang="scss" scoped>
 .srs-summary {
-  position: fixed;
   z-index: 3;
-  width: fit-content;
-  right: 80px;
-  bottom: 20px;
+  width: 50px;
+  height: 50px;
+  transition: all 200ms;
+
+  &.open {
+    width: fit-content;
+  }
   transition: all 200ms;
 }
 </style>

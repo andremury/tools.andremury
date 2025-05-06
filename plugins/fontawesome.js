@@ -11,6 +11,7 @@ import {
   faMinusCircle,
   faPlusCircle,
   faRandom,
+  faSearch,
   faTable,
   faTimes,
   faTimesCircle,
@@ -33,7 +34,8 @@ library.add(
   faExpand,
   faMinimize,
   faCheckCircle,
-  faTimesCircle
+  faTimesCircle,
+  faSearch
 );
 
 // This is important, we are going to let Nuxt worry about the CSS

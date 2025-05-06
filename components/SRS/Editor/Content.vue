@@ -44,7 +44,7 @@ import type { QuillEditor } from '@vueup/vue-quill';
 const mounted = ref(false);
 const model = defineModel<SRS.Specification>();
 
-const QEditor = ref<typeof QuillEditor>();
+const QEditor = shallowRef<typeof QuillEditor>();
 
 const visibleSections = computed(() => Object.entries(model?.value?.sections || {}).filter(
     ([_, value]) => !value.invisible

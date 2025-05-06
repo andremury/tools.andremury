@@ -24,8 +24,14 @@
 
     <SRSEditor v-model="doc" class="z1" />
     <!-- <SRSDocument :data="doc" class="z1" /> -->
-    <SRSCanvas :data="doc" :key="doc.id" />
-    <SRSSummary :data="doc" :key="doc.id" />
+    <FloatingMenu>
+      <SRSDocumentIndex
+        :data="doc.requirements.functional"
+        :key="`${doc.id}_SRSDocumentIndex`"
+      />
+      <SRSSummary :data="doc" :key="`${doc.id}_SRSSummary`" />
+      <SRSCanvas :data="doc" :key="`${doc.id}_SRSCanvas`" />
+    </FloatingMenu>
   </BContainer>
 </template>
 
@@ -34,6 +40,7 @@ import { type SRS } from '~/shared/types';
 import { toast } from 'vue3-toastify';
 import type { TableField } from 'bootstrap-vue-next';
 import startCase from 'lodash.startcase';
+import FloatingMenu from './FloatingMenu.vue';
 
 const emptySection = (title = '', content = '') =>
   <SRS.Section>{
