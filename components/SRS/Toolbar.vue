@@ -41,7 +41,8 @@
 import { toast } from 'vue3-toastify';
 import { LocalStorage } from '~/shared/SafeLocalStorage';
 import type { SRS } from '~/shared/types';
-import { normalizeRequirements } from '~/shared/normalizeRequirements';
+import { normalizeRequirements } from '~/shared/srs/normalizeRequirements';
+import { parseRelationships } from '~/shared/srs/parseRelationshipts';
 
 const { currentDoc } = defineProps<{
   currentDoc: SRS.Specification;
@@ -86,7 +87,9 @@ const save = () => {
   }
   const docs = LocalStorage.get<SRS.SavedDocsDict>('documents') || {};
 
-  docs[currentDoc.id] = JSON.parse(JSON.stringify({ ...currentDoc }));
+  const normalizedDoc = parseRelationships(normalizeRequirements(currentDoc));
+
+  docs[currentDoc.id] = JSON.parse(JSON.stringify({ ...normalizedDoc }));
 
   LocalStorage.set('documents', docs);
   savedDocs.value = docs;
@@ -113,7 +116,8 @@ const load = (docId: number) => {
     return;
   }
 
-  const normalizedDoc = normalizeRequirements(loadedDoc);
+  const normalizedDoc = parseRelationships(normalizeRequirements(loadedDoc));
+
   emit('load-doc', normalizedDoc);
 
   setTimeout(() => {
@@ -128,8 +132,10 @@ const exportJson = () => {
 
   const docFileName = `SRS-${currentDoc.name}-${new Date().getTime()}.json`;
 
+  const normalizedDoc = parseRelationships(normalizeRequirements(currentDoc));
+
   const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
-    JSON.stringify(currentDoc)
+    JSON.stringify(normalizedDoc)
   )}`;
   const downloadAnchorNode = document.createElement('a');
 
@@ -169,7 +175,9 @@ const importJson = (e: Event) => {
       return;
     }
 
-    const normalizedDoc = normalizeRequirements(importedDoc);
+    const normalizedDoc = parseRelationships(
+      normalizeRequirements(importedDoc)
+    );
 
     emit('load-doc', normalizedDoc);
 

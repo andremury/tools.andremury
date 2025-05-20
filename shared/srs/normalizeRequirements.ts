@@ -1,4 +1,4 @@
-import type { SRS } from './types';
+import type { SRS } from '../types';
 
 export const normalizeRequirements = (
   srs: SRS.Specification

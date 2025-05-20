@@ -71,6 +71,19 @@ export namespace SRS {
     description: string;
   }
 
+  export const enshortRequirement = (
+    requirement: ShortRequirement | Requirement
+  ): ShortRequirement => {
+    return {
+      _key: requirement._key,
+      id: requirement.id,
+      title: requirement.title,
+      color: requirement.color,
+      done: requirement.done,
+      group: requirement.group,
+    };
+  };
+
   export interface Specification {
     id: number;
     name: string;
