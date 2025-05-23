@@ -114,6 +114,5 @@ export const mockEntities: SRS.Entity[] = [
 export function getRandomEntity() {
     const len = mockEntities.length
     const idx = (Math.floor(Math.random()) * len)
-    console.debug(idx)
     return [mockEntities[idx]]
 }

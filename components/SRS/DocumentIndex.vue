@@ -83,7 +83,6 @@ const requirements = computed(() =>
         textSearch.toLowerCase()
       )
     );
-    console.log(textSearch, conditions);
     return conditions.every((c) => c);
   })
 );
