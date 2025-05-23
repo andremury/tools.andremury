@@ -106,11 +106,6 @@ const requirements = computed(
     []
 );
 
-function updatePriority(requirement: SRS.Requirement, value?: string) {
-  if (!value) return;
-  requirement.priority = value as SRS.Priority;
-}
-
 const getId = (type: ReqType, index?: number) => {
   const len = index || model.value.requirements[type].length + 1;
   const reqId = `${type === 'functional' ? 'FR' : 'NF'}${len

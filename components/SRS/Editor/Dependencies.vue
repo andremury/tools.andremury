@@ -1,15 +1,15 @@
 <template>
   <!-- Dependencies Management -->
-  <div class="deps border p-3">
+  <div class="deps border p-3 mt-2">
     <h5
       role="button"
       class="pointer user-select-none"
-      v-b-toggle="`collapse-${requirement._key}`"
+      v-b-toggle="`collapse-dependencies-${requirement._key}`"
       @click="setOptions"
     >
       Dependencies
     </h5>
-    <BCollapse :id="`collapse-${requirement._key}`">
+    <BCollapse :id="`collapse-dependencies-${requirement._key}`">
       <div
         class="dep d-flex justify-content-between align-items-center gap-4"
         v-for="(dep, idx) in selectedDependencies"
