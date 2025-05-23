@@ -20,6 +20,7 @@ const cmpRequirements = (
   );
 };
 
+import uniqBy from 'lodash.uniqby';
 export function parseRelationships(srs: SRS.Specification) {
   const allReqs = srs.requirements.functional;
 
@@ -27,6 +28,9 @@ export function parseRelationships(srs: SRS.Specification) {
     if (!deps) return;
     deps.forEach((dep: any, idx: number) => {
       if (!dep) return;
+      if (Array.isArray(dep.relatedRequirements)) {
+        dep.relatedRequirements = uniqBy(dep.relatedRequirements, '_key');
+      }
       const original = findByKey(dep._key, allReqs);
       if (!original) return;
       if (!cmpRequirements(dep, original)) {
@@ -41,6 +45,9 @@ export function parseRelationships(srs: SRS.Specification) {
   };
 
   allReqs.forEach((req) => {
+    req.dependencies = uniqBy(req.dependencies, '_key');
+    req.relatedRequirements = uniqBy(req.relatedRequirements, '_key');
+
     updateDeps(req.dependencies, true);
     updateDeps(req.relatedRequirements, false);
   });
