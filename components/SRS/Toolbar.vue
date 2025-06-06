@@ -30,6 +30,8 @@
       />
     </label>
     <BButton @click="createNewDoc">New document</BButton>
+    <BButton @click="printDoc"><FaIcon icon="print" /></BButton>
+    <BButton @click="createNewDoc">New document</BButton>
     <BButton variant="primary">
       <span v-if="saved">✅ Saved</span>
       <span v-else>❌ Not Saved</span>
@@ -57,6 +59,26 @@ const emit = defineEmits<{
 
 const savedDocs = ref<SRS.SavedDocsDict>({});
 const saved = ref(true);
+
+const printDoc = () => {
+  save();
+  const sheetPage = window.open(
+    `/requirement-studio/print?docId=${currentDoc.id}`,
+    '',
+    'height=1123,width=793'
+  );
+  if (sheetPage) {
+    sheetPage.focus();
+    sheetPage.onload = () => {
+      setTimeout(() => {
+        sheetPage.print();
+        sheetPage.onafterprint = () => {
+          sheetPage.close();
+        };
+      }, 3000);
+    };
+  }
+};
 
 const createNewDoc = () => {
   if (!saved.value && confirm('Save current document?')) {
