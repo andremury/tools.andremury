@@ -54,7 +54,7 @@
       </div>
     </div>
     <div
-      class="description"
+      class="description ql-editor"
       :class="{ 'border p-3 rounded': !nonFunctional }"
       v-html="requirement.text"
     ></div>
@@ -135,7 +135,7 @@ const entityFields: TableField<SRS.FieldSpec>[] = [
   {
     key: 'name',
     formatter: (_1, _2, item) =>
-      `${item.required ? '*' : ''}${startCase(item.name)}`,
+      `${item.required ? '*' : ''}${item.name}`,
   },
   {
     key: 'type',

@@ -14,6 +14,7 @@
           v-model:content="requirement.text"
           theme="bubble"
           content-type="html"
+          :toolbar="quillToolbarOptions"
         />
       </div>
     </BCollapse>
@@ -21,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import { quillToolbarOptions } from '~/shared/configs/quillToolbarOptions';
 import type { SRS } from '~/shared/types';
 
 const { requirement } = defineProps<{ requirement: SRS.Requirement }>();

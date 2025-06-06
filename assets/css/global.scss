@@ -78,6 +78,11 @@ body {
     transform: rotateZ(180deg);
 }
 
+.mh-400 {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
 @keyframes pulse {
     0% {
         opacity: .7
