@@ -3,6 +3,7 @@ import {
   faCheckCircle,
   faChevronDown,
   faChevronLeft,
+  faChevronRight,
   faChevronUp,
   faDiagramProject,
   faExpand,
@@ -12,6 +13,7 @@ import {
   faPlusCircle,
   faPrint,
   faRandom,
+  faRefresh,
   faSearch,
   faTable,
   faTimes,
@@ -29,6 +31,7 @@ library.add(
   faChevronDown,
   faRandom,
   faChevronLeft,
+  faChevronRight,
   faHome,
   faDiagramProject,
   faTimes,
@@ -37,7 +40,8 @@ library.add(
   faCheckCircle,
   faTimesCircle,
   faSearch,
-  faPrint
+  faPrint,
+  faRefresh
 );
 
 // This is important, we are going to let Nuxt worry about the CSS

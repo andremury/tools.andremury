@@ -9,14 +9,24 @@
     @mouseenter="highlightDeps(item)"
     @mouseleave="removeHighlights"
   />
-  <SRSCanvasLinks :requirements="data" :key="data.at(-1)?._key" />
+  <SRSCanvasLinks
+    :requirements="data"
+    :key="data.at(-1)?._key"
+    v-if="!hideLinks"
+  />
 </template>
 <script setup lang="ts">
 import type { SRS } from '~/shared/types';
 
-const props = defineProps<{
-  data: SRS.Requirement[];
-}>();
+const props = withDefaults(
+  defineProps<{
+    data: SRS.Requirement[];
+    hideLinks?: boolean;
+  }>(),
+  {
+    hideLinks: false,
+  }
+);
 
 const data = toRef(props.data);
 
@@ -25,7 +35,7 @@ const emit = defineEmits<{
 }>();
 
 const highlightDeps = (item: SRS.Requirement) => {
-  if (item.dependencies.length < 1) return;
+  if (item.dependencies.length < 1 || props.hideLinks) return;
   const curEl = document.getElementById(item._key);
   if (!curEl) return;
 

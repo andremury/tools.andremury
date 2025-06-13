@@ -15,11 +15,14 @@
       </div>
       <Transition mode="out-in">
         <div v-if="isOpen">
-          <!-- {{ pan }} {{ zoom }} {{ lastPointerPosition }} -->
+          p {{ pan }} - z {{ zoom }} - lpp {{ lastPointerPosition }}
           <div class="headers w-100 mb-5">
             <div
               class="action-buttons d-flex gap-3 position-absolute end-0 pr-4 pt-2"
             >
+              <div class="close pointer" role="button" @click="resetPosition">
+                <FaIcon icon="refresh" />
+              </div>
               <div class="close pointer" role="button" @click="toggleExpand">
                 <FaIcon :icon="expanded ? 'minimize' : 'expand'" />
               </div>
@@ -30,21 +33,19 @@
             <h5 class="text-center">{{ title }}</h5>
             <div class="text-center w-100 mb-3">
               <BButton
-                variant="link"
+                :variant="chartType === 'DAG' ? 'primary' : 'secondary'"
                 @click="chartType = 'DAG'"
-                :class="{ 'text-green': chartType === 'DAG' }"
                 >Requirement Map</BButton
               >
               <BButton
-                variant="link"
+                :variant="chartType === 'DEPTREE' ? 'primary' : 'secondary'"
                 @click="chartType = 'DEPTREE'"
-                :class="{ 'text-green': chartType === 'DEPTREE' }"
+                class="mx-3"
                 >Precedence Trees</BButton
               >
               <BButton
-                variant="link"
+                :variant="chartType === 'DEVPLAN' ? 'primary' : 'secondary'"
                 @click="chartType = 'DEVPLAN'"
-                :class="{ 'text-green': chartType === 'DEVPLAN' }"
                 >Development Planner</BButton
               >
             </div>
@@ -113,7 +114,29 @@ const zoom = ref(1);
 const isDragging = ref(false);
 const lastPointerPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
 
-const chartType = ref<'DAG' | 'DEVPLAN' | 'DEPTREE'>('DAG');
+const resetPosition = () => {
+  if (!canvasRef.value) {
+    zoom.value = 1;
+    return;
+  }
+
+  let xOffset = 0;
+  const wSize = window?.innerWidth;
+  const cSize = canvasRef.value.children[0].clientWidth;
+
+  if (cSize > wSize) {
+    xOffset = (cSize - wSize) / 2;
+  }
+
+  pan.value = { x: xOffset + 20, y: 0, z: 0 };
+};
+
+const chartType = shallowRef<'DAG' | 'DEVPLAN' | 'DEPTREE'>('DAG');
+watch(chartType, (v) => {
+  setTimeout(() => {
+    resetPosition();
+  }, 1);
+});
 
 const title = computed(() => {
   if (chartType.value === 'DAG') return 'Requirement Map';
@@ -188,7 +211,7 @@ const setPan = (e: WheelEvent) => {
   //   pan.value.y -= dy * delta - 1;
 
   if (zoom.value < 0.2 && delta < 0) {
-    zoom.value = -0.2;
+    zoom.value = 0.2;
   } else if (zoom.value > 2) {
     zoom.value = 2;
   }
