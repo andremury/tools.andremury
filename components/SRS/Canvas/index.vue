@@ -128,6 +128,7 @@ const resetPosition = () => {
     xOffset = (cSize - wSize) / 2;
   }
 
+  zoom.value = 1;
   pan.value = { x: xOffset + 20, y: 0, z: 0 };
 };
 
