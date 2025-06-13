@@ -27,7 +27,27 @@
                 <FaIcon icon="times" />
               </div>
             </div>
-            <h5 class="text-center">Requirement Map</h5>
+            <h5 class="text-center">{{ title }}</h5>
+            <div class="text-center w-100 mb-3">
+              <BButton
+                variant="link"
+                @click="chartType = 'DAG'"
+                :class="{ 'text-green': chartType === 'DAG' }"
+                >Requirement Map</BButton
+              >
+              <BButton
+                variant="link"
+                @click="chartType = 'DEPTREE'"
+                :class="{ 'text-green': chartType === 'DEPTREE' }"
+                >Precedence Trees</BButton
+              >
+              <BButton
+                variant="link"
+                @click="chartType = 'DEVPLAN'"
+                :class="{ 'text-green': chartType === 'DEVPLAN' }"
+                >Development Planner</BButton
+              >
+            </div>
           </div>
           <div
             class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative"
@@ -39,21 +59,21 @@
             @mousedown="watchDrag"
             ref="canvasRef"
           >
-            <SRSCanvasItem
-              :requirement="item"
-              v-for="(item, index) in data.requirements.functional"
-              :key="item._key"
-              @click="!isDragging && selectItem(item)"
-              role="button"
-              :id="item._key"
-              @mouseenter="highlightDeps(item)"
-              @mouseleave="removeHighlights"
+            <SRSCanvasDAG
+              @click="!isDragging && selectItem($event)"
+              :data="data.requirements.functional"
+              v-if="chartType === 'DAG'"
             />
-            <SRSCanvasLinks
-              :requirements="data.requirements.functional"
-              :key="data.id + data.requirements.functional.length"
+            <SRSCanvasDEPTREE
+              :data="data.requirements.functional"
+              v-if="chartType === 'DEPTREE'"
+            />
+            <SRSCanvasDEVPLANNER
+              :data="data.requirements.functional"
+              v-if="chartType === 'DEVPLAN'"
             />
           </div>
+
           <div
             v-else
             class="text-secondary d-flex align-items-center justify-content-center h-100 w-100 mt-5"
@@ -90,6 +110,15 @@ const pan = ref({ x: 0, y: 0, z: 0 });
 const zoom = ref(1);
 const isDragging = ref(false);
 const lastPointerPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
+const chartType = ref<'DAG' | 'DEVPLAN' | 'DEPTREE'>('DAG');
+
+const title = computed(() => {
+  if (chartType.value === 'DAG') return 'Requirement Map';
+  if (chartType.value === 'DEPTREE') return 'Dependence Trees';
+  if (chartType.value === 'DEVPLAN') return 'Development Planner';
+  return 'No tab selected';
+});
 
 const setPosition = (e: MouseEvent) => {
   pan.value.x += e.clientX - lastPointerPosition.value.x;
@@ -174,35 +203,6 @@ const selectItem = (item: SRS.Requirement) => {
 const closeModal = () => {
   toggleModal();
   selectedItem.value = undefined;
-};
-
-const highlightDeps = (item: SRS.Requirement) => {
-  if (item.dependencies.length < 1) return;
-  const curEl = document.getElementById(item._key);
-  if (!curEl) return;
-
-  item.dependencies.forEach((dep) => {
-    if (!dep) return;
-    const reqEl = document.getElementById(dep._key);
-    reqEl?.classList.add('ref-highlight');
-  });
-
-  const wrapper = document.getElementById(`req-dep-link-${item._key}`);
-  if (!wrapper) return;
-  Object.values(wrapper.children).forEach((svg) => {
-    if (svg.children[0]) {
-      svg.children[0].classList.add('ref-highlight');
-    }
-  });
-};
-
-const removeHighlights = () => {
-  if (typeof document === 'undefined') return;
-  Object.values(document.getElementsByClassName('ref-highlight')).forEach(
-    (el) => {
-      el.classList.remove('ref-highlight');
-    }
-  );
 };
 
 watch(isOpen, (open) => {
