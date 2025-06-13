@@ -65,10 +65,12 @@
               v-if="chartType === 'DAG'"
             />
             <SRSCanvasDEPTREE
+              @click="!isDragging && selectItem($event)"
               :data="data.requirements.functional"
               v-if="chartType === 'DEPTREE'"
             />
             <SRSCanvasDEVPLANNER
+              @click="!isDragging && selectItem($event)"
               :data="data.requirements.functional"
               v-if="chartType === 'DEVPLAN'"
             />
