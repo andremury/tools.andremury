@@ -234,8 +234,8 @@ const selectItem = (item: SRS.Requirement) => {
 };
 
 const closeModal = () => {
-  selectedItem.value = undefined;
   toggleModal();
+  selectedItem.value = undefined;
 };
 
 watch(isOpen, (open) => {
