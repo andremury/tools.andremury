@@ -15,7 +15,7 @@
       </div>
       <Transition mode="out-in">
         <div v-if="isOpen">
-          p {{ pan }} - z {{ zoom }} - lpp {{ lastPointerPosition }}
+          p {{ pan }} - z {{ zoom }} - lpp {{ lastPointerPosition }} {{ selectedItem?.id }}
           <div class="headers w-100 mb-5">
             <div
               class="action-buttons d-flex gap-3 position-absolute end-0 pr-4 pt-2"
@@ -89,6 +89,7 @@
       <SRSRequirementsDetailModal
         v-model="modalIsOpen"
         @close="closeModal"
+        @set-done="toggleIsImplementedMark"
         :requirement="selectedItem"
       />
     </div>
@@ -113,6 +114,12 @@ const pan = ref({ x: 0, y: 0, z: 0 });
 const zoom = ref(1);
 const isDragging = ref(false);
 const lastPointerPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+
+const toggleIsImplementedMark = () => {
+  if(selectedItem.value) {
+    selectedItem.value.implemented = !selectedItem.value.implemented
+  }
+}
 
 const resetPosition = () => {
   if (!canvasRef.value) {
@@ -227,8 +234,8 @@ const selectItem = (item: SRS.Requirement) => {
 };
 
 const closeModal = () => {
-  toggleModal();
   selectedItem.value = undefined;
+  toggleModal();
 };
 
 watch(isOpen, (open) => {

@@ -1,5 +1,13 @@
 <template>
-    <BModal id="details-modal" v-model="model" @ok="emit('close')" ok-title="Close" ok-only size="lg">
+    <BModal 
+        id="details-modal" 
+        v-model="model" 
+        :ok-title="requirement?.implemented ? 'Mark as undone' : 'Mark as done'" 
+        @ok="() => {emit('set-done');emit('close')}"
+        @close="emit('close')"
+        @backdrop="emit('close')"
+        size="lg"
+    >
 
         <template #header>
             <h3><b>[{{ requirement?.id }}] {{ requirement?.title }}</b></h3>
@@ -16,11 +24,13 @@ const model = defineModel({
     default: false
 });
 
-defineProps<{
+const props = defineProps<{
     requirement?: SRS.Requirement;
 }>();
 
+
 const emit = defineEmits<{
     (e: 'close'): void;
+    (e: 'set-done'): void;
 }>();
 </script>

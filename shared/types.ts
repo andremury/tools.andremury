@@ -42,6 +42,7 @@ export namespace SRS {
     title: string;
     color?: string;
     done?: boolean;
+    implemented?: boolean;
     group?: string;
   }
 

@@ -6,8 +6,14 @@
       backgroundColor: requirement.color || 'blanchedalmond',
     }"
   >
-    <div class="icon-completed position-absolute text-success" v-if="requirement.done">
-      <FaIcon icon="check-circle" />
+    <div class="icon-completed position-absolute text-dark" v-if="requirement.done">
+      <FaIcon icon="align-left" />
+    </div>
+    <div 
+      class="icon-implemented position-absolute"  
+      v-if="requirement.done"
+    >
+      <FaIcon icon="check-circle" :class=" requirement.implemented ? 'text-success' : 'text-secondary'" />
     </div>
     <div class="rf-content text-center">
       <p>
@@ -44,7 +50,11 @@ const textColor = computed(() =>
 
 <style lang="css" scoped>
 .icon-completed {
-    right: 1px;
-    top: -4px;
+    left: 2px;
+    top: -2px;
+}
+.icon-implemented {
+    right: 2px;
+    top: -2px;
 }
 </style>
