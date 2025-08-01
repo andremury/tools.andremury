@@ -9,11 +9,12 @@
     <div class="icon-completed position-absolute text-dark" v-if="requirement.done">
       <FaIcon icon="align-left" />
     </div>
+    
     <div 
-      class="icon-implemented position-absolute"  
-      v-if="requirement.done"
+      class="icon-implemented position-absolute text-success"  
+      v-if="requirement.done && requirement.implemented"
     >
-      <FaIcon icon="check-circle" :class=" requirement.implemented ? 'text-success' : 'text-secondary'" />
+      <FaIcon icon="check-circle" />
     </div>
     <div class="rf-content text-center">
       <p>

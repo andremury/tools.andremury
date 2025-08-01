@@ -2,10 +2,12 @@
     <BModal 
         id="details-modal" 
         v-model="model" 
-        :ok-title="requirement?.implemented ? 'Mark as undone' : 'Mark as done'" 
-        @ok="() => {emit('set-done');emit('close')}"
+        :cancel-title="requirement?.implemented ? 'Mark as undone' : 'Mark as done'" 
         @close="emit('close')"
+        @cancel="() => {emit('set-done');emit('close')}"
+        @ok="emit('close')"
         @backdrop="emit('close')"
+        :ok-only="!requirement?.done"
         size="lg"
     >
 
