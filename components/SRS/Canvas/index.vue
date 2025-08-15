@@ -14,9 +14,8 @@
         <FaIcon icon="diagram-project" class="fa-2x mt-1" />
       </div>
       <Transition mode="out-in">
-        <div v-if="isOpen">
-          p {{ pan }} - z {{ zoom }} - lpp {{ lastPointerPosition }} {{ selectedItem?.id }}
-          <div class="headers w-100 mb-5">
+        <div v-if="isOpen" class="pt-5 position-relative">
+          <div class="headers position-absolute vw-100 px-2" :style="{top: '-50px', right:0}">
             <div
               class="action-buttons d-flex gap-3 position-absolute end-0 pr-4 pt-2"
             >
@@ -51,7 +50,7 @@
             </div>
           </div>
           <div
-            class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative"
+            class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative mt-5"
             v-if="data.requirements.functional.length > 0"
             :style="{
               transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`,
@@ -287,7 +286,8 @@ watch(isOpen, (open) => {
 
   &.open {
     height: 50dvh;
-    width: 100dvw;
+    width: 100%;
+    min-width: 100dvw;
     right: 0;
     bottom: 0;
     margin-right: -10px;
