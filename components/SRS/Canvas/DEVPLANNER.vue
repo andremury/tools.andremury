@@ -1,7 +1,7 @@
 <template>
   <div>
     <BRow class="row-gap-5">
-      <BCol cols="12" v-for="tree in trees" class="d-flex flex-row gap-3 mb-5">
+      <BCol cols="12" v-for="tree in trees" class="d-flex flex-row gap-3 mb-5 justify-content-center">
         <SRSCanvasDAG :data="tree" @click="emit('click', $event)" />
       </BCol>
     </BRow>

@@ -89,7 +89,9 @@
         v-model="modalIsOpen"
         @close="closeModal"
         @set-done="toggleIsImplementedMark"
+        @switch="switchRequirement"
         :requirement="selectedItem"
+        :key="selectedItem?._key"
       />
     </div>
   </div>
@@ -229,6 +231,14 @@ const selectItem = (item: SRS.Requirement) => {
   else {
     selectedItem.value = item;
     toggleModal();
+  }
+};
+
+const switchRequirement = (key: string) => {
+  const req = data.requirements.functional.find((r) => r._key === key);
+  if (req) {
+    console.log(req._key)
+    selectedItem.value = req;
   }
 };
 

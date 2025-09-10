@@ -32,6 +32,7 @@
         <span v-for="dep in requirement.dependencies" :key="dep?._key">
           <a
             :href="`#${getRequirementId(currentTab, dep?._key)}`"
+            @click="clicked(dep?._key)"
             v-b-tooltip.hover="dep?.title"
           >
             {{ dep?.id }}
@@ -42,10 +43,11 @@
         class="related-requirements d-flex gap-2 flex-wrap"
         v-if="!nonFunctional && requirement.relatedRequirements?.length > 0"
       >
-        Mentioned by: <br />
+        Required by: <br />
         <span v-for="dep in requirement.relatedRequirements" :key="dep?._key">
           <a
             :href="`#${getRequirementId(currentTab, dep?._key)}`"
+            @click="clicked(dep?._key)"
             v-b-tooltip.hover="dep?.title"
           >
             {{ dep?.id }}
@@ -144,6 +146,17 @@ const entityFields: TableField<SRS.FieldSpec>[] = [
     key: 'description',
   },
 ];
+
+
+const emit = defineEmits<{
+  (e: 'click-ref', key: string): void;
+}>()
+
+const clicked = (key?: string) => {
+  if(!key) return;
+  emit('click-ref', key)
+}
+
 </script>
 
 <style lang="scss" scoped>

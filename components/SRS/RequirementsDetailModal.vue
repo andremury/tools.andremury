@@ -15,7 +15,7 @@
             <h3><b>[{{ requirement?.id }}] {{ requirement?.title }}</b></h3>
         </template>
 
-        <SRSRequirement :requirement="requirement" v-if="requirement" />
+        <SRSRequirement :requirement="requirement" v-if="requirement" @click-ref="switchRequirement" />
     </BModal>
 </template>
 
@@ -30,9 +30,14 @@ const props = defineProps<{
     requirement?: SRS.Requirement;
 }>();
 
-
 const emit = defineEmits<{
     (e: 'close'): void;
     (e: 'set-done'): void;
+    (e: 'switch', key: string): void;
 }>();
+
+const switchRequirement = (key: string) =>{
+    emit('switch', key);
+}
+
 </script>
