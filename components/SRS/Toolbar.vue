@@ -31,7 +31,6 @@
     </label>
     <BButton @click="createNewDoc">New document</BButton>
     <BButton @click="printDoc"><FaIcon icon="print" /></BButton>
-    <BButton @click="createNewDoc">New document</BButton>
     <BButton variant="primary">
       <span v-if="saved">✅ Saved</span>
       <span v-else>❌ Not Saved</span>

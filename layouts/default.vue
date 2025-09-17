@@ -24,6 +24,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: black;
+  font-family: 'Poppins', 'Open Sans', Arial, Helvetica, sans-serif;
 }
 
 #main {
