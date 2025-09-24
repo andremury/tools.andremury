@@ -3,7 +3,8 @@
     <div
       class="canvas-content overflow-hidden"
       :class="{ 'open bg-dark p-3 overflow-auto': isOpen, expanded }"
-      @wheel="setPan"
+      @wheel.prevent="setZoom"
+      ref="containerRef"
     >
       <div
         class="icon border rounded-circle bg-white shadow-sm text-info d-flex align-items-center justify-content-center pointer"
@@ -30,7 +31,7 @@
               </div>
             </div>
             <h5 class="text-center">{{ title }}</h5>
-            <div class="text-center w-100 mb-3">
+            <div class="text-center w-100">
               <BButton
                 :variant="chartType === 'DAG' ? 'primary' : 'secondary'"
                 @click="chartType = 'DAG'"
@@ -50,11 +51,11 @@
             </div>
           </div>
           <div
-            class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative mt-5"
+            class="srs-section d-flex gap-5 flex-wrap justify-content-center position-relative"
             v-if="data.requirements.functional.length > 0"
             :style="{
               transform: `translate(${pan.x}px,${pan.y}px) scale(${zoom})`,
-              transformOrigin: '50% 0',
+              transformOrigin: '0 0'
             }"
             @mousedown="watchDrag"
             ref="canvasRef"
@@ -108,6 +109,7 @@ const { isOpen, toggle } = useDisclosure();
 const { isOpen: expanded, toggle: toggleExpand } = useDisclosure();
 
 const canvasRef = ref<HTMLElement | null>();
+const containerRef = ref<HTMLElement | null>();
 
 const selectedItem = ref<SRS.Requirement>();
 
@@ -123,18 +125,17 @@ const toggleIsImplementedMark = () => {
 }
 
 const resetPosition = () => {
-  if (!canvasRef.value) {
+  if (!canvasRef.value || !containerRef.value) {
     zoom.value = 1;
+    pan.value = { x: 20, y: 0, z: 0 };
     return;
   }
 
-  let xOffset = 0;
-  const wSize = window?.innerWidth;
-  const cSize = canvasRef.value.children[0].clientWidth;
+  const wSize = containerRef.value.clientWidth;
+  const cSize = canvasRef.value.clientWidth;
 
-  if (cSize > wSize) {
-    xOffset = (cSize - wSize) / 2;
-  }
+  let xOffset = 0;
+  if (cSize > wSize) xOffset = (cSize - wSize) / 2;
 
   zoom.value = 1;
   pan.value = { x: xOffset + 20, y: 0, z: 0 };
@@ -201,30 +202,32 @@ const watchDrag = (e: MouseEvent) => {
   });
 };
 
-const setPan = (e: WheelEvent) => {
+const setZoom = (e: WheelEvent) => {
   e.preventDefault();
+  if (!containerRef.value) return;
 
-  const delta = e.deltaY > 0 ? -1 : 1;
+  const rect = containerRef.value.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
 
-  zoom.value += delta / 10;
+  // ponto no conteúdo antes do zoom (coordenadas do conteúdo)
+  const contentX = (mx - pan.value.x) / zoom.value;
+  const contentY = (my - pan.value.y) / zoom.value;
 
-  //   const rect = canvasRef.value!.getBoundingClientRect();
+  // fator multiplicativo reversível. ajuste sensibilidade se quiser.
+  const factor = Math.exp(-e.deltaY * 0.002);
 
-  //   const mouseX = e.clientX - rect.left;
-  //   const mouseY = e.clientY - rect.top;
+  let newZoom = zoom.value * factor;
+  newZoom = Math.min(2, Math.max(0.2, newZoom));
 
-  //   const dx = mouseX / zoom.value;
-  //   const dy = mouseY / zoom.value;
+  // recalcula pan para manter o ponto sob o mouse
+  pan.value.x = mx - contentX * newZoom;
+  pan.value.y = my - contentY * newZoom;
 
-  //   pan.value.x -= dx * delta - 1;
-  //   pan.value.y -= dy * delta - 1;
-
-  if (zoom.value < 0.2 && delta < 0) {
-    zoom.value = 0.2;
-  } else if (zoom.value > 2) {
-    zoom.value = 2;
-  }
+  zoom.value = newZoom;
 };
+
+
 
 const selectItem = (item: SRS.Requirement) => {
   if (selectedItem.value?.id === item.id) selectedItem.value = undefined;
@@ -257,6 +260,12 @@ watch(isOpen, (open) => {
 </script>
 
 <style>
+.srs-section {
+  z-index: 1;
+  will-change: transform;
+  transition: none !important; /* impede interpolação de transform */
+}
+
 .ref-highlight {
   filter: drop-shadow(0 0 0.5em rgb(255, 253, 124)) !important;
   stroke-width: 10px !important;
@@ -264,14 +273,14 @@ watch(isOpen, (open) => {
 
 .dependency-links path {
   stroke-width: 2;
-  transition: all 200ms;
+  transition: opacity 200ms;
 }
 
 .canvas-item {
   width: 200px;
   word-break: normal;
   user-select: none;
-  transition: all 200ms;
+  /* transition: height 200ms; */
   z-index: 1;
 }
 
@@ -292,7 +301,7 @@ watch(isOpen, (open) => {
   z-index: 3;
   height: 50px;
   width: 50px;
-  transition: all 200ms;
+  transition: height 200ms, width 200ms, background-color 200ms;
 
   &.open {
     height: 50dvh;
